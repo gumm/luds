@@ -39,6 +39,6 @@ while True:
 
     # Read all the ADC channel values in a list.
     # Read the specified ADC channel using the previously set gain value.
-    v = adc.read_adc(1, gain=GAIN) / RANGE * 100
-
+    v = round(adc.read_adc(0, gain=GAIN) / RANGE * 270)
+    print(v)
     time.sleep(0.1)
