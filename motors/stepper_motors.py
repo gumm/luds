@@ -21,7 +21,7 @@ SEQ = [
     ]
 
 
-class StepperMotor28BJY48:
+class Sm28BJY48:
     def __init__(self, con_pins=None):
 
         # These are the pins corresponding to the
