@@ -42,32 +42,37 @@ class StepperMotor28BJY48:
         """
         for p in self.CON_PINS:
             GPIO.output(p, 0)
+
+    @staticmethod
+    def deg_to_steps(deg):
+        """
+        Given some degree value, convert it to stepper motor steps
+        :param deg: A number of degrees
+        :return: A number of steps
+        """
+        return round(deg * (512 / 360))
         
-    def turn(self, ang=360, direction=0, steps=None):
+    def turn(self, ang=360, cw=0, steps=None):
         """
         Execute stepping.
-        Accepts either a number of steps, or an
-        angle, and a direction.
-        When given both an angle and steps, the
-        angle parameter is ignored.
-        When given neither steps nor an angle, one full
-        rotation is executed.
-        Default direction is counter-clock-wise.
-        Accepts 'cw' and 'ccw' as acceptable dir values.
-        Else 0 or False is counter-clock-wise or
-        True or anything that evaluates to true is
-        considered clock-wise
+        :param ang: A number of degrees. Defaults to 360
+        :param cw: True, 1, or 'cw' for clock-wise rotation.
+            False, 0, or 'ccw' for counter clockwise rotation.
+            Defaults to 0 (CCW)
+        :param steps: The number of steps to take. Takes precedence over the
+            degrees (if both are given)
+        :return:
         """
         
         # Parse the string values for dir
-        if direction == 'cw':
-            direction = 1
-        if direction == 'ccw':
-            direction = 0
+        if cw == 'cw':
+            cw = 1
+        if cw == 'ccw':
+            cw = 0
         
         # Prepare to either count up or down
         # depending on the direction given
-        counter = 1 if direction else -1
+        counter = 1 if cw else -1
         
         # If either the steps or the angle is zero
         # there is no point in doing anything.
@@ -77,17 +82,17 @@ class StepperMotor28BJY48:
         # When given steps, use it as is, else
         # convert the given angle to the nearest
         # integer number of steps.
-        steps = steps if steps else round(ang * (512 / 360))
+        steps = steps if steps else self.deg_to_steps(ang)
         
         # Depending on the given direction, rotation is either
         # a list from 0 to 7 (ccw) or 7 to 0 (cw)
         rotation = list(range(8))
-        rotation = list(reversed(rotation)) if direction else rotation
+        rotation = list(reversed(rotation)) if cw else rotation
         
         # Depending on the given direction, the pins are traversed either
         # from 0 to 3 (ccw) or 3 to 0 (cw)
         pins = list(range(4))
-        pins = list(reversed(pins)) if direction else pins
+        pins = list(reversed(pins)) if cw else pins
         
         # Loop through the sequence the required number of steps.
         # setting the GPIO output to either 1 or 0 as defined by
@@ -110,12 +115,16 @@ class StepperMotor28BJY48:
         """
         s = self.SC % 512
         steps = 256 - (s - 256) if s > 256 else s
-        return self.turn(steps=steps, direction=s > 256)
+        return self.turn(steps=steps, cw=s > 256)
             
 
 motor = StepperMotor28BJY48()
-motor.turn(ang=45)
+motor.turn(ang=34, cw=True)
 sleep(2)
+motor.turn(ang=58, cw=False)
+sleep(1)
+motor.turn(ang=298, cw=True)
+sleep(1)
 motor.go_zero()
 
 GPIO.cleanup()
