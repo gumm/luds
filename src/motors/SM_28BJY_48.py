@@ -118,13 +118,3 @@ class StepperMotor28BJY48:
         return self.turn(steps=steps, cw=s > 256)
             
 
-motor = StepperMotor28BJY48()
-motor.turn(ang=34, cw=True)
-sleep(2)
-motor.turn(ang=58, cw=False)
-sleep(1)
-motor.turn(ang=298, cw=True)
-sleep(1)
-motor.go_zero()
-
-GPIO.cleanup()
