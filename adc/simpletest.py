@@ -65,9 +65,11 @@ POT_CAL = {
 
 def reading_to_degrees(pin, v):
     cal = POT_CAL[pin]
-    span = cal['high'] - cal['low']
+    low = cal['low']
+    high = cal['high']
+    span = high - low
     throw = cal['throw']
-    return (v / span) * throw
+    return ((v - low) / span) * throw
 
 if args.calibrate and args.pin is not None:
     # Main loop.
