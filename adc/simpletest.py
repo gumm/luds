@@ -3,21 +3,24 @@
 # Author: Tony DiCola
 # License: Public Domain
 import time
+import argparse
 
 # Import the ADS1x15 module.
 import Adafruit_ADS1x15
 
 
-
 # Create an ADS1115 ADC (16-bit) instance.
 adc = Adafruit_ADS1x15.ADS1115()
 
-# Or create an ADS1015 ADC (12-bit) instance.
-#adc = Adafruit_ADS1x15.ADS1015()
+parser = argparse.ArgumentParser(
+    description='This measures angle')
+parser.add_argument('-c', '--calibrate', help='Calibrate mode', required=False)
+parser.add_argument('-p', '--pin', help='The PIN to calibrate', required=False)
+args = parser.parse_args()
 
-# Note you can change the I2C address from its default (0x48), and/or the I2C
-# bus by passing in these optional parameters:
-#adc = Adafruit_ADS1x15.ADS1015(address=0x49, busnum=1)
+# show values
+print("Calibrate Mode: %s" % args.calibrate)
+print("Calibrate PIN: %s" % args.pin)
 
 # Choose a gain of 1 for reading voltages from 0 to 4.09V.
 # Or pick a different gain to change the range of voltages that are read:
