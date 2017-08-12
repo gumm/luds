@@ -88,19 +88,29 @@ else:
     # Main loop.
     n = 100
     arr = [0] * n
+    x_arr = [i for i in range(n)]
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    li, = ax.plot(x_arr, arr)
+    ax.relim()
+
+    ax.autoscale_view(True, True, True)
+    fig.canvas.draw()
+    plt.show(block=False)
+
     while True:
-        plt.clf()
+        # # Read all the ADC channel values in a list.
+        # # Read the specified ADC channel using the previously set gain value.
+        # for p in ARR:
+        #     RES[p] = reading_to_degrees(p, adc.read_adc(p, gain=GAIN))
+        # print(RES)
+        arr.insert(0, reading_to_degrees(1, adc.read_adc(0, gain=GAIN)))
+        arr.pop()
+        li.set_ydata(arr)
+        fig.canvas.draw()
 
-        for i in range(20):
-            # # Read all the ADC channel values in a list.
-            # # Read the specified ADC channel using the previously set gain value.
-            # for p in ARR:
-            #     RES[p] = reading_to_degrees(p, adc.read_adc(p, gain=GAIN))
-            # print(RES)
-            arr.insert(0, reading_to_degrees(1, adc.read_adc(0, gain=GAIN)))
-            arr.pop()
-            time.sleep(0.05)
+        time.sleep(0.1)
 
-        plt.bar([i for i in range(len(arr))], arr)
-        plt.draw()
+        # plt.bar([i for i in range(len(arr))], arr)
+        # plt.draw()
 
