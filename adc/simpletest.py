@@ -69,8 +69,8 @@ def reading_to_degrees(pin, v):
     high = cal['high']
     span = high - low
     throw = cal['throw']
-    return ((v - low) / span) * throw
-    # return "{:.2f}".format(((v - low) / span) * throw)
+    # return ((v - low) / span) * throw
+    return "{:.2f}".format(((v - low) / span) * throw)
 
 if args.calibrate and args.pin is not None:
     # Main loop.
@@ -88,9 +88,9 @@ else:
         # # Read the specified ADC channel using the previously set gain value.
         for p in ARR:
             RES[p] = reading_to_degrees(p, adc.read_adc(p, gain=GAIN))
-            RES.insert(0, t)
-            t += freq
+        t += freq
+        print('%s %s' % (t, RES))
         time.sleep(freq)
-        print(RES)
+
 
 
