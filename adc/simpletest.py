@@ -46,18 +46,18 @@ POT_CAL = {
         'throw': 300
     },
     1: {
-        'low': 1,
-        'high': 2635,
+        'low': 5,
+        'high': 26335,
         'throw': 300
     },
     2: {
-        'low': 1,
-        'high': 2635,
+        'low': 4,
+        'high': 26335,
         'throw': 300
     },
     3: {
-        'low': 6,
-        'high': 26348,
+        'low': 4,
+        'high': 26335,
         'throw': 300
     }
 }
