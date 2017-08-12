@@ -75,6 +75,6 @@ while True:
     # Read all the ADC channel values in a list.
     # Read the specified ADC channel using the previously set gain value.
     for p in ARR:
-        RES[p] = reading_to_degrees(adc.read_adc(p, gain=GAIN))
+        RES[p] = reading_to_degrees(p, adc.read_adc(p, gain=GAIN))
     print(RES)
     time.sleep(0.1)
