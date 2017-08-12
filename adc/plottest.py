@@ -5,8 +5,12 @@
 import time
 import argparse
 
+import matplotlib.pyplot as plt
+
 # Import the ADS1x15 module.
 import Adafruit_ADS1x15
+
+plt.ion()
 
 
 # Create an ADS1115 ADC (16-bit) instance.
@@ -81,16 +85,32 @@ if args.calibrate and args.pin is not None:
         time.sleep(0.1)
 
 else:
-    freq = 0.1
-    t = 0
+    # Main loop.
+    n = 100
+    arr = [1, 310] * int((n / 2))
+    x_arr = [i for i in range(n)]
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    li, = ax.plot(x_arr, arr)
+    # ax.relim()
+
+    ax.autoscale_view(True, True, True)
+    fig.canvas.draw()
+    plt.show(block=False)
+
     while True:
         # # Read all the ADC channel values in a list.
         # # Read the specified ADC channel using the previously set gain value.
-        for p in ARR:
-            RES[p] = reading_to_degrees(p, adc.read_adc(p, gain=GAIN))
-            RES.insert(0, t)
-            t += freq
-        time.sleep(freq)
-        print(RES)
+        # for p in ARR:
+        #     RES[p] = reading_to_degrees(p, adc.read_adc(p, gain=GAIN))
+        # print(RES)
+        arr.insert(0, reading_to_degrees(1, adc.read_adc(0, gain=GAIN)))
+        arr.pop()
+        li.set_ydata(arr)
+        fig.canvas.draw()
 
+        time.sleep(0.1)
+
+        # plt.bar([i for i in range(len(arr))], arr)
+        # plt.draw()
 
