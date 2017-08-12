@@ -41,21 +41,25 @@ ARR = [0, 1, 2, 3]
 RES = [0, 0, 0, 0]
 POT_CAL = {
     0: {
+        'offset': 30,
         'low': 9,
         'high': 26344,
         'throw': 297
     },
     1: {
+        'offset': 30,
         'low': 5,
         'high': 26335,
         'throw': 300
     },
     2: {
+        'offset': 30,
         'low': 4,
         'high': 26335,
         'throw': 300
     },
     3: {
+        'offset': 30,
         'low': 4,
         'high': 26335,
         'throw': 300
@@ -65,12 +69,13 @@ POT_CAL = {
 
 def reading_to_degrees(pin, v):
     cal = POT_CAL[pin]
+    offset = cal['offset']
     low = cal['low']
     high = cal['high']
     span = high - low
     throw = cal['throw']
     # return ((v - low) / span) * throw
-    r = ((v - low) / span) * throw
+    r = ((v - low) / span) * throw - offset
     return "%.2f" % round(r, 2)
 
 if args.calibrate and args.pin is not None:
