@@ -91,7 +91,7 @@ else:
     while True:
         plt.clf()
 
-        for i in range(100):
+        for i in range(20):
             # # Read all the ADC channel values in a list.
             # # Read the specified ADC channel using the previously set gain value.
             # for p in ARR:
@@ -101,6 +101,6 @@ else:
             arr.pop()
             time.sleep(0.05)
 
-        plt.scatter([i for i in range(len(arr))], arr)
+        plt.bar([i for i in range(len(arr))], arr)
         plt.draw()
 
