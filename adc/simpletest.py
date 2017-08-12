@@ -5,8 +5,12 @@
 import time
 import argparse
 
+import matplotlib.pyplot as plt
+
 # Import the ADS1x15 module.
 import Adafruit_ADS1x15
+
+plt.ion()
 
 
 # Create an ADS1115 ADC (16-bit) instance.
@@ -69,7 +73,8 @@ def reading_to_degrees(pin, v):
     high = cal['high']
     span = high - low
     throw = cal['throw']
-    return "{:.2f}".format(((v - low) / span) * throw)
+    return ((v - low) / span) * throw
+    # return "{:.2f}".format(((v - low) / span) * throw)
 
 if args.calibrate and args.pin is not None:
     # Main loop.
@@ -81,11 +86,19 @@ if args.calibrate and args.pin is not None:
 
 else:
     # Main loop.
+    n = 100
+    arr = [0] * n
     while True:
+        plt.clf()
 
-        # Read all the ADC channel values in a list.
-        # Read the specified ADC channel using the previously set gain value.
-        for p in ARR:
-            RES[p] = reading_to_degrees(p, adc.read_adc(p, gain=GAIN))
-        print(RES)
+        # # Read all the ADC channel values in a list.
+        # # Read the specified ADC channel using the previously set gain value.
+        # for p in ARR:
+        #     RES[p] = reading_to_degrees(p, adc.read_adc(p, gain=GAIN))
+        # print(RES)
+        arr.insert(0, reading_to_degrees(1, adc.read_adc(0, gain=GAIN)))
+        arr.pop()
+
+        plt.scatter([i for i in range(len(arr))], arr)
+        plt.draw()
         time.sleep(0.1)
