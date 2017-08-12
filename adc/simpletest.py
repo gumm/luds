@@ -90,7 +90,7 @@ else:
     arr = [i for i in range(n)]
     x_arr = [i for i in range(n)]
     fig = plt.figure()
-    ax = fig.add_subplot(111)
+    ax = fig.add_subplot(310)
     li, = ax.plot(x_arr, arr)
     ax.relim()
 
