@@ -63,8 +63,8 @@ POT_CAL = {
 }
 
 
-def reading_to_degrees(p, v):
-    cal = POT_CAL[p]
+def reading_to_degrees(pin, v):
+    cal = POT_CAL[pin]
     span = cal['high'] - cal['low']
     throw = cal['throw']
     return (v / span) * throw
@@ -72,8 +72,9 @@ def reading_to_degrees(p, v):
 if args.calibrate and args.pin is not None:
     # Main loop.
     while True:
-        p = args.pin
-        print(adc.read_adc(p, gain=GAIN))
+        p = int(args.pin)
+        print(p, type(p))
+        # print(adc.read_adc(p, gain=GAIN))
         time.sleep(0.1)
 
 else:
