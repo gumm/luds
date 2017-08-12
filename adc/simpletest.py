@@ -35,7 +35,7 @@ HIGH = 26359
 RANGE = HIGH - LOW
 
 ARR = [0, 1, 2, 3]
-RES = []
+RES = [0, 0, 0, 0]
 
 # Main loop.
 while True:
