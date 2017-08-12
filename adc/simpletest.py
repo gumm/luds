@@ -91,14 +91,16 @@ else:
     while True:
         plt.clf()
 
-        # # Read all the ADC channel values in a list.
-        # # Read the specified ADC channel using the previously set gain value.
-        # for p in ARR:
-        #     RES[p] = reading_to_degrees(p, adc.read_adc(p, gain=GAIN))
-        # print(RES)
-        arr.insert(0, reading_to_degrees(1, adc.read_adc(0, gain=GAIN)))
-        arr.pop()
+        for i in range(100):
+            # # Read all the ADC channel values in a list.
+            # # Read the specified ADC channel using the previously set gain value.
+            # for p in ARR:
+            #     RES[p] = reading_to_degrees(p, adc.read_adc(p, gain=GAIN))
+            # print(RES)
+            arr.insert(0, reading_to_degrees(1, adc.read_adc(0, gain=GAIN)))
+            arr.pop()
+            time.sleep(0.1)
 
         plt.scatter([i for i in range(len(arr))], arr)
         plt.draw()
-        time.sleep(0.1)
+
