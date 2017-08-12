@@ -73,8 +73,8 @@ if args.calibrate and args.pin is not None:
     # Main loop.
     while True:
         p = int(args.pin)
-        print(p, type(p))
-        # print(adc.read_adc(p, gain=GAIN))
+        v = adc.read_adc(p, gain=GAIN)
+        print(v)
         time.sleep(0.1)
 
 else:
