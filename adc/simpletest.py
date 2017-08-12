@@ -87,7 +87,7 @@ else:
     while True:
         # # Read all the ADC channel values in a list.
         # # Read the specified ADC channel using the previously set gain value.
-        output = '%.2f %s' % round(t, 2)
+        output = '%.2f' % round(t, 2)
         for p in ARR:
             output = '%s %s' % (output, reading_to_degrees(p, adc.read_adc(p, gain=GAIN)))
         t += freq
