@@ -99,7 +99,7 @@ else:
             # print(RES)
             arr.insert(0, reading_to_degrees(1, adc.read_adc(0, gain=GAIN)))
             arr.pop()
-            time.sleep(0.1)
+            time.sleep(0.05)
 
         plt.scatter([i for i in range(len(arr))], arr)
         plt.draw()
