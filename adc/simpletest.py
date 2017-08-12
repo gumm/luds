@@ -87,7 +87,7 @@ if args.calibrate and args.pin is not None:
 else:
     # Main loop.
     n = 100
-    arr = [0, 310]
+    arr = [1, 310] * int((n / 2))
     x_arr = [i for i in range(n)]
     fig = plt.figure()
     ax = fig.add_subplot(111)
