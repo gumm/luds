@@ -36,6 +36,35 @@ RANGE = HIGH - LOW
 
 ARR = [0, 1, 2, 3]
 RES = [0, 0, 0, 0]
+POT_CAL = {
+    0: {
+        'low': 1,
+        'high': 2635,
+        'throw': 300
+    },
+    1: {
+        'low': 1,
+        'high': 2635,
+        'throw': 300
+    },
+    2: {
+        'low': 1,
+        'high': 2635,
+        'throw': 300
+    },
+    3: {
+        'low': 1,
+        'high': 2635,
+        'throw': 300
+    }
+}
+
+
+def reading_to_degrees(p, v):
+    cal = POT_CAL[p]
+    span = cal['high'] - cal['low']
+    throw = cal['throw']
+    return (v / span) * throw
 
 # Main loop.
 while True:
@@ -43,6 +72,6 @@ while True:
     # Read all the ADC channel values in a list.
     # Read the specified ADC channel using the previously set gain value.
     for p in ARR:
-        RES[p] = adc.read_adc(p, gain=GAIN)
+        RES[p] = reading_to_degrees(adc.read_adc(p, gain=GAIN))
     print(RES)
     time.sleep(0.1)
