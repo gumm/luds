@@ -90,7 +90,7 @@ else:
         for p in ARR:
             RES[p] = reading_to_degrees(p, adc.read_adc(p, gain=GAIN))
         t += freq
-        print('%s %s' % ('{:.2f}'.format(t), RES))
+        print('%.2f %s' % (round(t, 2), RES))
         time.sleep(freq)
 
 
