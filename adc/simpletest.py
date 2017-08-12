@@ -69,7 +69,7 @@ def reading_to_degrees(pin, v):
     high = cal['high']
     span = high - low
     throw = cal['throw']
-    return ((v - low) / span)
+    return (v / span) - low
 
 if args.calibrate and args.pin is not None:
     # Main loop.
