@@ -1,12 +1,10 @@
-import matplotlib.pyplot as plt
-import numpy as np
 import pandas as pd
-import matplotlib
-matplotlib.style.use('ggplot')
+import matplotlib.pyplot as plt
 
+df = pd.read_csv('../testout.log', sep=' ', header=None)
+df.plot()
+plt.show()
 
-df = pd.read_csv('~/Documents/testout.log', sep=' ', header=None)
-df.values
 
 # array([[ 1. ,  2. ,  3. ],
 #        [ 4. ,  5.5,  6. ]])
