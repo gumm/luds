@@ -72,7 +72,7 @@ class ADC_ADS1115:
         r = (((v - low) / span) * throw - offset) / correction
         return "%.2f" % round(r, 2)
 
-    def run(self, filename=None):
+    def run(self):
         if self.args.calibrate and self.args.pin is not None:
             # Main loop.
             while True:
@@ -83,7 +83,8 @@ class ADC_ADS1115:
 
         else:
             t = 0
-            f = self.args.filename
+            f = None
+            filename = self.args.filename
             try:
                 if filename:
                     f = open(filename, "w", encoding="utf-8")
