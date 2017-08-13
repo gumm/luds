@@ -89,7 +89,7 @@ class ADC_ADS1115:
                     f = open(filename, "w", encoding="utf-8")
                 while True:
                     # # Read all the ADC channel values in a list.
-                    output = '%.1f' % round(t, 1)
+                    output = '%.2f' % round(t, 2)
                     for pin, cal in self.POT_CAL.items():
                         ang = self.reading_to_degrees(
                             cal, self.adc.read_adc(pin, gain=self.GAIN))
