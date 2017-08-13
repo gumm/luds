@@ -97,7 +97,7 @@ class ADC_ADS1115:
                         output = '%s %s' % (output, ang)
                     t += self.sample_rate
                     if f:
-                        f.write(output)
+                        f.write('%s\n' % output)
                     print(output)
                     time.sleep(self.sample_rate)
             except KeyboardInterrupt:
