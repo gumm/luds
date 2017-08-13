@@ -72,7 +72,7 @@ class ADC_ADS1115:
         r = (((v - low) / span) * throw - offset) / correction
         return "%.2f" % round(r, 2)
 
-    def run(self):
+    def run(self, filename=None):
         if self.args.calibrate and self.args.pin is not None:
             # Main loop.
             while True:
@@ -83,16 +83,26 @@ class ADC_ADS1115:
 
         else:
             t = 0
-            while True:
-                # # Read all the ADC channel values in a list.
-                output = '%.2f' % round(t, 2)
-                for pin, cal in self.POT_CAL.items():
-                    ang = self.reading_to_degrees(
-                        cal, self.adc.read_adc(pin, gain=self.GAIN))
-                    output = '%s %s' % (output, ang)
-                t += self.sample_rate
-                print(output)
-                time.sleep(self.sample_rate)
+            f = None
+            try:
+                if filename:
+                    f = open(filename, "w", encoding="utf-8")
+                while True:
+                    # # Read all the ADC channel values in a list.
+                    output = '%.1f' % round(t, 1)
+                    for pin, cal in self.POT_CAL.items():
+                        ang = self.reading_to_degrees(
+                            cal, self.adc.read_adc(pin, gain=self.GAIN))
+                        output = '%s %s' % (output, ang)
+                    t += self.sample_rate
+                    f.write(output) if f else print(output)
+                    time.sleep(self.sample_rate)
+            except KeyboardInterrupt:
+                f.close() if f else f
+
+
+
+
 
 
 
