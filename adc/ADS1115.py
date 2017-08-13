@@ -83,7 +83,7 @@ class ADC_ADS1115:
 
         else:
             t = 0
-            f = None
+            f = self.args.filename
             try:
                 if filename:
                     f = open(filename, "w", encoding="utf-8")
