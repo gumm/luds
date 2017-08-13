@@ -1,14 +1,24 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
+import matplotlib
+matplotlib.style.use('ggplot')
 
-# evenly sampled time at 200ms intervals
-t = np.arange(0., 5., 0.2)
-# print(t)
 
-plt.plot([1, 2, 3, 4], [1, 4, 9, 16], 'b--')
-plt.ylabel('some numbers')
-plt.savefig("test.svg")
-plt.show()
+df = pd.read_csv('~/Documents/testout.log', sep=' ', header=None)
+df.values
+
+# array([[ 1. ,  2. ,  3. ],
+#        [ 4. ,  5.5,  6. ]])
+#
+# # evenly sampled time at 200ms intervals
+# t = np.arange(0., 5., 0.2)
+# # print(t)
+#
+# plt.plot([1, 2, 3, 4], [1, 4, 9, 16], 'b--')
+# plt.ylabel('some numbers')
+# plt.savefig("test.svg")
+# plt.show()
 
 
 # import matplotlib.pyplot as plt

@@ -1,4 +1,5 @@
 import time
+import pandas as pd
 
 # Import the ADS1x15 module.
 from Adafruit_ADS1x15 import ADS1115
@@ -101,8 +102,18 @@ class ADC_ADS1115:
                     print(output)
                     time.sleep(self.sample_rate)
             except KeyboardInterrupt:
+                print('Now Plotting...')
                 f.close() if f else f
+                self.plot()
 
+    def plot(self):
+        filename = self.args.filename
+        try:
+            df = pd.read_csv(filename, sep=' ', header=None)
+            del df[0]
+            df.plot()
+        except Exception:
+            print('Noting to plot')
 
 
 
