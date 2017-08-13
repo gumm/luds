@@ -1,7 +1,7 @@
 import time
 
 # Import the ADS1x15 module.
-import Adafruit_ADS1x15.ADS1115 as ADS1115
+import adafruit-ads1x15.ADS1115 as ADS1115
 
 
 class ADC_ADS1115:
