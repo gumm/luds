@@ -96,7 +96,9 @@ class ADC_ADS1115:
                             cal, self.adc.read_adc(pin, gain=self.GAIN))
                         output = '%s %s' % (output, ang)
                     t += self.sample_rate
-                    f.write(output) if f else print(output)
+                    if f:
+                        f.write(output)
+                    print(output)
                     time.sleep(self.sample_rate)
             except KeyboardInterrupt:
                 f.close() if f else f
