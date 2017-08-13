@@ -1,18 +1,7 @@
-# Simple demo of reading each analog input from the ADS1x15 and printing it to
-# the screen.
-# Author: Tony DiCola
-# License: Public Domain
 import time
-import argparse
 
 # Import the ADS1x15 module.
 import Adafruit_ADS1x15.ADS1115 as ADS1115
-
-parser = argparse.ArgumentParser(
-    description='This measures angle')
-parser.add_argument('-c', '--calibrate', help='Calibrate mode', required=False)
-parser.add_argument('-p', '--pin', help='The PIN to calibrate', required=False)
-args = parser.parse_args()
 
 
 class ADC_ADS1115:
