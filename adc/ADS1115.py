@@ -76,7 +76,7 @@ class ADC_ADS1115:
         if self.args.calibrate and self.args.pin is not None:
             # Main loop.
             while True:
-                p = int(args.pin)
+                p = int(self.args.pin)
                 v = self.adc.read_adc(p, gain=self.GAIN)
                 print(v)
                 time.sleep(0.1)
