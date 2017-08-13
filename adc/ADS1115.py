@@ -1,5 +1,6 @@
 import time
 import pandas as pd
+import matplotlib
 
 # Import the ADS1x15 module.
 from Adafruit_ADS1x15 import ADS1115
