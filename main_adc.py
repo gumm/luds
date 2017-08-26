@@ -6,6 +6,7 @@ parser = argparse.ArgumentParser(
 parser.add_argument('-c', '--calibrate', help='Calibrate mode', required=False)
 parser.add_argument('-p', '--pin', help='The PIN to calibrate', required=False)
 parser.add_argument('-f', '--filename', help='Write to a file', required=False)
+parser.add_argument('-r', '--raw', help='Write raw readings', required=False)
 args = parser.parse_args()
 
 

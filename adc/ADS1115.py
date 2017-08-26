@@ -19,6 +19,8 @@ class ADC_ADS1115:
         # show values
         print("Calibrate Mode: %s" % self.args.calibrate)
         print("Calibrate PIN: %s" % self.args.pin)
+        print("RAW Readings: %s" % self.args.raw)
+
 
         # Choose a gain of 1 for reading voltages from 0 to 4.09V.
         # Or pick a different gain to change the range of voltages that
@@ -75,7 +77,7 @@ class ADC_ADS1115:
         r = (((v - low) / span) * throw - offset) / correction
         return "%.2f" % round(r, 2)
 
-    def run(self, raw=False):
+    def run(self):
         if self.args.calibrate and self.args.pin is not None:
             # Main loop.
             while True:
@@ -88,6 +90,7 @@ class ADC_ADS1115:
             t = 0
             f = None
             filename = self.args.filename
+            ang = None
             try:
                 if filename:
                     f = open(filename, "w", encoding="utf-8")
@@ -96,8 +99,9 @@ class ADC_ADS1115:
                     output = '%.2f' % round(t, 2)
                     for pin, cal in self.POT_CAL.items():
                         raw_reading = self.adc.read_adc(pin, gain=self.GAIN)
-                        ang = self.reading_to_degrees(cal, raw)
-                        output = '%s %s' % (output, raw_reading if raw else ang)
+                        if self.args.raw:
+                            ang = self.reading_to_degrees(cal, raw_reading)
+                        output = '%s %s' % (output, ang if ang else raw_reading)
                     t += self.sample_rate
                     if f:
                         f.write('%s\n' % output)
