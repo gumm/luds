@@ -8,7 +8,7 @@ from Adafruit_ADS1x15 import ADS1115
 
 
 class ADC_ADS1115:
-    def __init__(self, mode_args=None, sample_rate=0.1):
+    def __init__(self, mode_args=None, sample_rate=0.05):
 
         self.args = mode_args
         self.sample_rate = sample_rate
@@ -75,7 +75,7 @@ class ADC_ADS1115:
         r = (((v - low) / span) * throw - offset) / correction
         return "%.2f" % round(r, 2)
 
-    def run(self):
+    def run(self, raw=False):
         if self.args.calibrate and self.args.pin is not None:
             # Main loop.
             while True:
@@ -95,9 +95,9 @@ class ADC_ADS1115:
                     # # Read all the ADC channel values in a list.
                     output = '%.2f' % round(t, 2)
                     for pin, cal in self.POT_CAL.items():
-                        ang = self.reading_to_degrees(
-                            cal, self.adc.read_adc(pin, gain=self.GAIN))
-                        output = '%s %s' % (output, ang)
+                        raw_reading = self.adc.read_adc(pin, gain=self.GAIN)
+                        ang = self.reading_to_degrees(cal, raw)
+                        output = '%s %s' % (output, raw_reading if raw else ang)
                     t += self.sample_rate
                     if f:
                         f.write('%s\n' % output)
@@ -116,7 +116,7 @@ class ADC_ADS1115:
             df.plot()
             plt.show()
         except Exception:
-            print('Noting to plot')
+            print('Nothing to plot')
 
 
 
