@@ -1,9 +1,16 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-df = pd.read_csv('../testout.log', sep=' ', header=None)
-df.plot()
-plt.show()
+
+class PlotFile:
+    def __init__(self, mode_args=None):
+
+        self.args = mode_args
+
+    def draw_plot(self):
+        df = pd.read_csv(self.args.filename, sep=' ', header=None)
+        df.plot()
+        plt.show()
 
 
 # array([[ 1. ,  2. ,  3. ],
