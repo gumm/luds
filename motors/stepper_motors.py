@@ -22,11 +22,12 @@ SEQ = [
 
 
 class Sm28BJY48:
-    def __init__(self, con_pins=None):
+    def __init__(self, con_pins=None, speed=0.001):
 
         # These are the pins corresponding to the
         # stepper motor inputs.
         self.CON_PINS = con_pins if con_pins else [14, 15, 18, 23]
+        self.SLEEP = speed
 
         # We want to keep track of the step count
         self.SC = 0
@@ -102,7 +103,7 @@ class Sm28BJY48:
             for step in rotation:
                 for p in pins:
                     GPIO.output(self.CON_PINS[p], SEQ[step][p])
-                sleep(0.001)
+                sleep(self.SLEEP)
         self.reset()
 
     def go_zero(self):
