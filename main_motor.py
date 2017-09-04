@@ -63,7 +63,6 @@ def phase_3():
     knie_q.put([30, True])
 
 
-
 def all_done():
     knie_q.put('DONE')
     enkel_q.put('DONE')
@@ -102,10 +101,11 @@ if __name__ == "__main__":
     knie_q.put([KNIE, True])
     enkel_q.put([ENKEL, False])
 
-    sleep(1)
-    enkel_q.put([ENKEL, True])
-    enkel_q.put([ENKEL, False])
-    sleep(1)
+    sleep(2)
+    # enkel_q.put([ENKEL, True])
+    # sleep(1)
+    # enkel_q.put([ENKEL, False])
+    # sleep(1)
 
     knie_q.put([KNIE, False])
     enkel_q.put([ENKEL, True])
