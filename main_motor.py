@@ -118,4 +118,4 @@ if __name__ == "__main__":
     # knie_q.put([KNIE, False])
     # enkel_q.put([ENKEL, True])
 
-    # all_done()
+    all_done()
