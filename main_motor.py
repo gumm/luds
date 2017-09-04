@@ -41,7 +41,7 @@ class MotorThread(threading.Thread):
 
 SPEED = 0.005
 KNIE = 90
-ENKEL = 20
+ENKEL = 30
 knie_q = queue.Queue()
 enkel_q = queue.Queue()
 
@@ -100,7 +100,7 @@ if __name__ == "__main__":
     # phase_2()
     # phase_3()
 
-    knie_q.put([KNIE, True])
+    # knie_q.put([KNIE, True])
     enkel_q.put([ENKEL, False])
 
     # sleep(2)
@@ -109,7 +109,7 @@ if __name__ == "__main__":
     # enkel_q.put([ENKEL, False])
     # sleep(1)
 
-    knie_q.put([KNIE, False])
+    # knie_q.put([KNIE, False])
     enkel_q.put([ENKEL, True])
 
     all_done()
