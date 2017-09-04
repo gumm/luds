@@ -7,7 +7,7 @@ import threading
 
 class MotorThread(threading.Thread):
 
-    def __init__(self, con_pins=None, speed=None, seq=None):
+    def __init__(self, con_pins=None, speed=0.001, seq='HALF_STEP'):
         threading.Thread.__init__(self)
 
         self.motor = stepper_motors.Sm28BJY48(
