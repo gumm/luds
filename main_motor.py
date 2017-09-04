@@ -62,13 +62,13 @@ if __name__ == "__main__":
         knie_q,
         'KNIE',
         con_pins=[6, 13, 19, 26],
-        speed=SPEED,
+        speed=0.005,
         seq='DUAL_PHASE_FULL_STEP')
     enkel = MotorThread(
         enkel_q,
         'ENKEL',
         con_pins=[12, 16, 20, 21],
-        speed=SPEED)
+        speed=0.05)
 
     knie.start()
     enkel.start()
