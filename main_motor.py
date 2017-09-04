@@ -36,7 +36,7 @@ class MotorThread(threading.Thread):
                 ang=work.pop(0),
                 cw=work.pop(0),
                 steps=None,
-                duration=0.8)
+                duration=work.pop(0))
             self.q.task_done()
 
 SPEED = 0.005
