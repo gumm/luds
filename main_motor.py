@@ -46,22 +46,21 @@ knie_q = queue.Queue()
 enkel_q = queue.Queue()
 
 
-def phase_1():
-    print('Phase - 1')
-    enkel_q.put([10, False])
-    knie_q.put([20, True])
+def back_swing():
+    knie_q.put([93, True, 0.25])
+    enkel_q.put([40, False, 0.25])
 
 
-def phase_2():
-    print('Phase - 2')
-    enkel_q.put([10, False])
-    knie_q.put([40, True])
+def forward_swing():
+    knie_q.put([93, False, 0.25])
+    enkel_q.put([5, True, 0.15])
+    enkel_q.put([35, True, 0.10])
 
 
-def phase_3():
-    print('Phase - 3')
-    enkel_q.put([10, True])
-    knie_q.put([30, True])
+def stride():
+    back_swing()
+    forward_swing()
+    sleep(0.2)
 
 
 def all_done():
@@ -96,20 +95,7 @@ if __name__ == "__main__":
     knie.start()
     enkel.start()
 
-    # phase_1()
-    # phase_2()
-    # phase_3()
-
-    # knie_q.put([KNIE, True])
-    enkel_q.put([ENKEL, False])
-
-    # sleep(2)
-    # enkel_q.put([ENKEL, True])
-    # sleep(1)
-    # enkel_q.put([ENKEL, False])
-    # sleep(1)
-
-    # knie_q.put([KNIE, False])
-    enkel_q.put([ENKEL, True])
+    for i in range(10):
+        stride()
 
     all_done()
