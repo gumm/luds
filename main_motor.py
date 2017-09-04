@@ -102,7 +102,7 @@ if __name__ == "__main__":
     knie_q.put([KNIE, True])
     enkel_q.put([ENKEL, False])
 
-    sleep(2)
+    # sleep(2)
     # enkel_q.put([ENKEL, True])
     # sleep(1)
     # enkel_q.put([ENKEL, False])
