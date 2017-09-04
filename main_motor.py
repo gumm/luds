@@ -9,9 +9,10 @@ import queue
 
 class MotorThread(threading.Thread):
 
-    def __init__(self, q, con_pins=None, speed=0.001, seq='HALF_STEP'):
+    def __init__(self, q, name, con_pins=None, speed=0.001, seq='HALF_STEP'):
         threading.Thread.__init__(self)
 
+        self.setName(name)
         self.q = q
         self.motor = stepper_motors.Sm28BJY48(
             con_pins=con_pins,
@@ -58,12 +59,14 @@ if __name__ == "__main__":
     GPIO.setwarnings(False)
 
     knie = MotorThread(
-        q=knie_q,
+        knie_q,
+        'KNIE',
         con_pins=[6, 13, 19, 26],
         speed=SPEED,
         seq='DUAL_PHASE_FULL_STEP')
     enkel = MotorThread(
-        q=enkel_q,
+        enkel_q,
+        'ENKEL',
         con_pins=[12, 16, 20, 21],
         speed=SPEED)
 
