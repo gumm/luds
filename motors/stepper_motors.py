@@ -62,7 +62,7 @@ class Sm28BJY48:
             self.SEQ = SINGLE_PHASE_STEP
             self.SPR = 256
         else:
-            raise ('"%s" is not a recognised step sequence name.' % seq)
+            raise Exception('"%s" is not a recognised step sequence name.' % seq)
 
         # Calculate this only once.
         self.SEQ_LENGTH = len(self.SEQ)
