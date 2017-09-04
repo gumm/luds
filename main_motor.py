@@ -68,7 +68,7 @@ if __name__ == "__main__":
         enkel_q,
         'ENKEL',
         con_pins=[12, 16, 20, 21],
-        speed=0.05)
+        speed=0.01)
 
     knie.start()
     enkel.start()
