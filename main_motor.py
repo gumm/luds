@@ -71,10 +71,12 @@ if __name__ == "__main__":
     enkel.start()
 
     knie_q.put([KNIE, True])
+    enkel_q.put([ENKEL, False])
+
     enkel_q.put([ENKEL, True])
     enkel_q.put([ENKEL, False])
-    enkel_q.put([ENKEL, True])
+
     knie_q.put([KNIE, False])
-    enkel_q.put([ENKEL, False])
+    enkel_q.put([ENKEL, True])
 
     all_done()
