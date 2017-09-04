@@ -60,7 +60,6 @@ def forward_swing():
 def stride():
     back_swing()
     forward_swing()
-    sleep(0.2)
 
 
 def all_done():
