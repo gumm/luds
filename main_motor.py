@@ -21,7 +21,7 @@ class MotorThread(threading.Thread):
 
     def run(self):
         me = self.getName()
-        print('%s is running...', me)
+        print('%s is running...' % me)
         while True:
             work = self.q.get()
             if work is None:
@@ -76,10 +76,10 @@ if __name__ == "__main__":
     knie_q.put([KNIE, True])
     enkel_q.put([ENKEL, False])
 
-    sleep(1)
-    enkel_q.put([ENKEL, True])
-    enkel_q.put([ENKEL, False])
-    sleep(1)
+    # sleep(1)
+    # enkel_q.put([ENKEL, True])
+    # enkel_q.put([ENKEL, False])
+    # sleep(1)
 
     knie_q.put([KNIE, False])
     enkel_q.put([ENKEL, True])
