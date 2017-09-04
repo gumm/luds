@@ -89,7 +89,8 @@ if __name__ == "__main__":
         'ENKEL',
         oq=knie_q,
         con_pins=[12, 16, 20, 21],
-        speed=0.005)
+        speed=0.005,
+        seq='DUAL_PHASE_FULL_STEP')
 
     knie.start()
     enkel.start()
