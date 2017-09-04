@@ -1,4 +1,5 @@
 from time import sleep
+from functools import partial
 import RPi.GPIO as GPIO
 from motors import stepper_motors
 
@@ -29,17 +30,26 @@ class MotorThread(threading.Thread):
                 self.q.task_done()
                 return
             print('%s got this: %s' % (me, work))
-            self.motor.turn(ang=work[0], cw=work(1), steps=None)
+            self.motor.turn(
+                ang=work[0],
+                cw=work(1),
+                steps=work[2] if len(work) > 2 else None)
             self.q.task_done()
-
-    def turn(self, ang=None, cw=None, steps=None):
-        self.motor.turn(ang=ang, cw=cw, steps=steps)
-
 
 KNIE = 90
 ENKEL = 20
 knie_q = queue.Queue()
 enkel_q = queue.Queue()
+
+
+def all_done():
+    knie_q.put('DONE')
+    enkel_q.put('DONE')
+    knie.join()
+    enkel.join()
+
+    GPIO.cleanup()
+    print('Done')
 
 if __name__ == "__main__":
 
@@ -59,10 +69,4 @@ if __name__ == "__main__":
     knie_q.put([KNIE, False])
     enkel_q.put([ENKEL, False])
 
-    knie_q.put('DONE')
-    enkel_q.put('DONE')
-    knie.join()
-    enkel.join()
-
-    GPIO.cleanup()
-    print('Done')
+    all_done()
