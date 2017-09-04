@@ -45,14 +45,19 @@ enkel_q = queue.Queue()
 
 
 def phase_1():
+    print('Phase - 1')
     enkel_q.put([10, False])
     knie_q.put([20, True])
 
+
 def phase_2():
+    print('Phase - 2')
     enkel_q.put([10, False])
     knie_q.put([40, True])
 
+
 def phase_3():
+    print('Phase - 3')
     enkel_q.put([10, True])
     knie_q.put([30, True])
 
