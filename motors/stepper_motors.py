@@ -8,8 +8,31 @@ import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
-# The step sequence
-SEQ = [
+# Single Phase step sequence
+# Fast, half resolution, low torque.
+SINGLE_PHASE_STEP = [
+    [1, 0, 0, 0],
+    [0, 1, 0, 0],
+    [0, 0, 1, 0],
+    [0, 0, 0, 1]
+]
+
+# Dual Phase Full step sequence
+# Maximum torque
+# Half the resolution
+# Double the speed.
+DUAL_PHASE_FULL_STEP = [
+    [1, 0, 0, 1],
+    [1, 1, 0, 0],
+    [0, 1, 1, 0],
+    [0, 0, 1, 1]
+]
+
+# Half-step step sequence
+# Maximum resolution
+# Slower
+# About 70% of torque
+HALF_STEP = [
     [1, 0, 0, 0],
     [1, 1, 0, 0],
     [0, 1, 0, 0],
@@ -22,12 +45,27 @@ SEQ = [
 
 
 class Sm28BJY48:
-    def __init__(self, con_pins=None, speed=0.001):
+    def __init__(self, con_pins=None, speed=0.001, seq='HALF_STEP'):
 
         # These are the pins corresponding to the
         # stepper motor inputs.
         self.CON_PINS = con_pins if con_pins else [14, 15, 18, 23]
         self.SLEEP = speed
+
+        if seq == 'HALF_STEP':
+            self.SEQ = HALF_STEP
+            self.SPR = 512
+        elif seq == 'DUAL_PHASE_FULL_STEP':
+            self.SEQ = DUAL_PHASE_FULL_STEP
+            self.SPR = 256
+        elif seq == 'SINGLE_PHASE_STEP':
+            self.SEQ = SINGLE_PHASE_STEP
+            self.SPR = 256
+        else:
+            raise ('"%s" is not a recognised step sequence name.' % seq)
+
+        # Calculate this only once.
+        self.SEQ_LENGTH = len(self.SEQ)
 
         # We want to keep track of the step count
         self.SC = 0
@@ -44,14 +82,14 @@ class Sm28BJY48:
         for p in self.CON_PINS:
             GPIO.output(p, 0)
 
-    @staticmethod
-    def deg_to_steps(deg):
+    def deg_to_steps(self, deg):
         """
         Given some degree value, convert it to stepper motor steps
         :param deg: A number of degrees
         :return: A number of steps
         """
-        return round(deg * (512 / 360))
+
+        return round(deg * (self.SPR / 360))
         
     def turn(self, ang=360, cw=0, steps=None):
         """
@@ -86,8 +124,8 @@ class Sm28BJY48:
         steps = steps if steps else self.deg_to_steps(ang)
         
         # Depending on the given direction, rotation is either
-        # a list from 0 to 7 (ccw) or 7 to 0 (cw)
-        rotation = list(range(8))
+        # a list from 0 to self.SEQ_LENGTH (ccw) or self.SEQ_LENGTH to 0 (cw)
+        rotation = list(range(self.SEQ_LENGTH))
         rotation = list(reversed(rotation)) if cw else rotation
         
         # Depending on the given direction, the pins are traversed either
@@ -102,7 +140,7 @@ class Sm28BJY48:
             self.SC += counter
             for step in rotation:
                 for p in pins:
-                    GPIO.output(self.CON_PINS[p], SEQ[step][p])
+                    GPIO.output(self.CON_PINS[p], self.SEQ[step][p])
                 sleep(self.SLEEP)
         self.reset()
 
@@ -114,8 +152,9 @@ class Sm28BJY48:
         Half rotation is 256, and this is as far as
         it is possible to get away from 0
         """
-        s = self.SC % 512
-        steps = 256 - (s - 256) if s > 256 else s
-        return self.turn(steps=steps, cw=s > 256)
+        halfway = int(self.SPR / 2)
+        s = self.SC % self.SPR
+        steps = halfway - (s - halfway) if s > halfway else s
+        return self.turn(steps=steps, cw=s > halfway)
             
 
