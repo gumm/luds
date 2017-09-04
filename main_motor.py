@@ -36,7 +36,7 @@ class MotorThread(threading.Thread):
                 steps=work[2] if len(work) > 2 else None)
             self.q.task_done()
 
-SPEED = 0.001
+SPEED = 0.005
 KNIE = 90
 ENKEL = 20
 knie_q = queue.Queue()
