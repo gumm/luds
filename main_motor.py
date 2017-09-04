@@ -36,12 +36,6 @@ class MotorThread(threading.Thread):
                 ang=work.pop(0),
                 cw=work.pop(0),
                 steps=None)
-            try:
-                nxt = work.pop(0)
-                print('%s put %s on the other queue' % (me, nxt))
-                self.other_q.put(nxt)
-            except IndexError:
-                pass
             self.q.task_done()
 
 SPEED = 0.005
@@ -101,21 +95,19 @@ if __name__ == "__main__":
     knie.start()
     enkel.start()
 
-    enkel_q.put([10, False, [20, True]])
-
     # phase_1()
     # phase_2()
     # phase_3()
 
-    # knie_q.put([KNIE, True])
-    # enkel_q.put([ENKEL, False])
+    knie_q.put([KNIE, True])
+    enkel_q.put([ENKEL, False])
 
-    # sleep(1)
-    # enkel_q.put([ENKEL, True])
-    # enkel_q.put([ENKEL, False])
-    # sleep(1)
+    sleep(1)
+    enkel_q.put([ENKEL, True])
+    enkel_q.put([ENKEL, False])
+    sleep(1)
 
-    # knie_q.put([KNIE, False])
-    # enkel_q.put([ENKEL, True])
+    knie_q.put([KNIE, False])
+    enkel_q.put([ENKEL, True])
 
     all_done()
