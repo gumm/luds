@@ -37,9 +37,9 @@ class MotorThread(threading.Thread):
                 cw=work.pop(0),
                 steps=None)
             try:
-                next = work.pop(0)
-                print('%s put %s on the other queue' % (me, next))
-                self.other_q.put(work.pop(0))
+                nxt = work.pop(0)
+                print('%s put %s on the other queue' % (me, nxt))
+                self.other_q.put(nxt)
             except IndexError:
                 pass
             self.q.task_done()
