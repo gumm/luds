@@ -9,11 +9,12 @@ import queue
 
 class MotorThread(threading.Thread):
 
-    def __init__(self, q, name, con_pins=None, speed=0.001, seq='HALF_STEP'):
+    def __init__(self, q, name, oq=None, con_pins=None, speed=0.001, seq='HALF_STEP'):
         threading.Thread.__init__(self)
 
         self.setName(name)
         self.q = q
+        self.other_q = oq
         self.motor = stepper_motors.Sm28BJY48(
             con_pins=con_pins,
             speed=speed,
@@ -32,9 +33,13 @@ class MotorThread(threading.Thread):
                 return
             print('%s got this: %s' % (me, work))
             self.motor.turn(
-                ang=work[0],
-                cw=work[1],
-                steps=work[2] if len(work) > 2 else None)
+                ang=work.pop(0),
+                cw=work.pop(0),
+                steps=None)
+            try:
+                self.other_q.put(work.pop(0))
+            except IndexError:
+                pass
             self.q.task_done()
 
 SPEED = 0.005
@@ -80,21 +85,25 @@ if __name__ == "__main__":
     knie = MotorThread(
         knie_q,
         'KNIE',
+        oq=enkel_q,
         con_pins=[6, 13, 19, 26],
         speed=0.005,
         seq='DUAL_PHASE_FULL_STEP')
     enkel = MotorThread(
         enkel_q,
         'ENKEL',
+        oq=knie_q,
         con_pins=[12, 16, 20, 21],
         speed=0.005)
 
     knie.start()
     enkel.start()
 
-    phase_1()
-    phase_2()
-    phase_3()
+    enkel_q.put([10, False, [20, True]])
+
+    # phase_1()
+    # phase_2()
+    # phase_3()
 
     # knie_q.put([KNIE, True])
     # enkel_q.put([ENKEL, False])
