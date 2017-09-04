@@ -91,7 +91,7 @@ class Sm28BJY48:
 
         return round(deg * (self.SPR / 360))
         
-    def turn(self, ang=360, cw=0, steps=None):
+    def turn(self, ang=360, cw=0, steps=None, duration=None):
         """
         Execute stepping.
         :param ang: A number of degrees. Defaults to 360
@@ -100,6 +100,8 @@ class Sm28BJY48:
             Defaults to 0 (CCW)
         :param steps: The number of steps to take. Takes precedence over the
             degrees (if both are given)
+        :param duration: The amount of time (in seconds) we should take to execute
+            this turn. When given we calculate the sleep time from here.
         :return:
         """
         
@@ -122,7 +124,12 @@ class Sm28BJY48:
         # convert the given angle to the nearest
         # integer number of steps.
         steps = steps if steps else self.deg_to_steps(ang)
-        
+
+        # When given a time, calculate the sleep interval between steps
+        interval = duration / steps if duration else self.SLEEP
+        interval = max(interval, 0.001)
+        print('DUR: %s STEPS: %s INTERVAL: %s' % (duration, steps, interval))
+
         # Depending on the given direction, rotation is either
         # a list from 0 to self.SEQ_LENGTH (ccw) or self.SEQ_LENGTH to 0 (cw)
         rotation = list(range(self.SEQ_LENGTH))
@@ -141,7 +148,7 @@ class Sm28BJY48:
             for step in rotation:
                 for p in pins:
                     GPIO.output(self.CON_PINS[p], self.SEQ[step][p])
-                sleep(self.SLEEP)
+                sleep(interval)
         self.reset()
 
     def go_zero(self):

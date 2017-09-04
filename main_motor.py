@@ -35,7 +35,8 @@ class MotorThread(threading.Thread):
             self.motor.turn(
                 ang=work.pop(0),
                 cw=work.pop(0),
-                steps=None)
+                steps=None,
+                interval=0.5)
             self.q.task_done()
 
 SPEED = 0.005
