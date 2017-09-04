@@ -32,10 +32,11 @@ class MotorThread(threading.Thread):
             print('%s got this: %s' % (me, work))
             self.motor.turn(
                 ang=work[0],
-                cw=work(1),
+                cw=work[1],
                 steps=work[2] if len(work) > 2 else None)
             self.q.task_done()
 
+SPEED = 0.001
 KNIE = 90
 ENKEL = 20
 knie_q = queue.Queue()
@@ -56,8 +57,15 @@ if __name__ == "__main__":
     GPIO.setmode(GPIO.BCM)
     GPIO.setwarnings(False)
 
-    knie = MotorThread(q=knie_q, con_pins=[6, 13, 19, 26], speed=0.005, seq='DUAL_PHASE_FULL_STEP')
-    enkel = MotorThread(q=enkel_q, con_pins=[12, 16, 20, 21], speed=0.005)
+    knie = MotorThread(
+        q=knie_q,
+        con_pins=[6, 13, 19, 26],
+        speed=SPEED,
+        seq='DUAL_PHASE_FULL_STEP')
+    enkel = MotorThread(
+        q=enkel_q,
+        con_pins=[12, 16, 20, 21],
+        speed=SPEED)
 
     knie.start()
     enkel.start()
