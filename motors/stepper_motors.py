@@ -149,7 +149,7 @@ class Sm28BJY48:
                 for p in pins:
                     GPIO.output(self.CON_PINS[p], self.SEQ[step][p])
                 sleep(interval)
-        self.reset()
+        # self.reset()
 
     def go_zero(self):
         """

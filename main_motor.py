@@ -94,7 +94,7 @@ if __name__ == "__main__":
     knie.start()
     enkel.start()
 
-    for i in range(10):
+    for i in range(5):
         stride()
 
     all_done()
