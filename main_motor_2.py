@@ -114,10 +114,10 @@ def stride():
 
 if __name__ == '__main__':
     info('main line')
-    mp.set_start_method('fork')
+    mp.set_start_method('spawn')
     # main_queue = Queue()
-    knie_pipe, knie_child_pipe = Pipe()
-    enkel_pipe, enkel_child_pipe = Pipe()
+    knie_pipe, knie_child_pipe = Pipe(duplex=False)
+    enkel_pipe, enkel_child_pipe = Pipe(duplex=False)
     knie = Queue()
     enkel = Queue()
     lock = Lock()
@@ -142,8 +142,8 @@ if __name__ == '__main__':
     for i in range(5):
         for d in DD:
             knie.put(['goto', d[1], 0.05])
-            enkel.put(['goto', d[0], 0.05])
-            # print(knie_pipe.recv())
+            # enkel.put(['goto', d[0], 0.05])
+            print(knie_pipe.recv())
             # print(enkel_pipe.recv())
 
     # Done and cleanup
