@@ -43,6 +43,7 @@ DD = [
     [7.30, 41.84,  3.91],
     [7.20, 41.70,  2.12],
     [7.19, 41.51,  0.00],
+    [7.49, 39.34,  8.29],
 ]
 
 
@@ -121,14 +122,14 @@ if __name__ == '__main__':
         [6, 13, 19, 26],
         0.005,
         'DUAL_PHASE_FULL_STEP',
-        20)).start()
+        39.34)).start()
 
     ep = mp.Process(target=motor_process, args=(
         'ENKEL', lock, enkel, knie, main_queue,
         [12, 16, 20, 21],
         0.005,
         'DUAL_PHASE_FULL_STEP',
-        0)).start()
+        7.49)).start()
 
     sleep(1)
     print('GO!!!!')
