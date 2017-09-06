@@ -134,7 +134,7 @@ if __name__ == '__main__':
         'ENKEL', lock, enkel, knie, enkel_send,
         [12, 16, 20, 21],
         0.001,
-        'DUAL_PHASE_FULL_STEP',
+        'HALF_STEP',
         7.49)).start()
 
     sleep(1)
