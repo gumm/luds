@@ -53,6 +53,11 @@ def backward():
     eq.put([40, True, 0.2])
 
 
+def stride():
+    forward()
+    backward()
+
+
 def done():
     kq.put('STOP')
     print(mq.get())
@@ -91,10 +96,8 @@ if __name__ == '__main__':
     sleep(1)
     print('GO!!!!')
 
-    forward()
-    sleep(1)
-    backward()
-    sleep(1)
+    for i in range(2):
+        stride()
     done()
 
     GPIO.cleanup()
