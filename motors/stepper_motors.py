@@ -131,7 +131,7 @@ class Sm28BJY48:
         # When given a time, calculate the sleep interval between steps
         interval = duration / steps if duration else self.SLEEP
         interval = max(interval, 0.001)
-        print('DUR: %s STEPS: %s INTERVAL: %s' % (duration, steps, interval))
+        # print('DUR: %s STEPS: %s INTERVAL: %s' % (duration, steps, interval))
 
         # Depending on the given direction, rotation is either
         # a list from 0 to self.SEQ_LENGTH (ccw) or self.SEQ_LENGTH to 0 (cw)
