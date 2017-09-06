@@ -92,7 +92,7 @@ if __name__ == '__main__':
     sleep(1)
     print('GO!!!!')
 
-    knie.put('goto', 30, 0.5)
+    knie.put(['goto', 30, 0.5])
 
     # for i in range(2):
     #     stride()
