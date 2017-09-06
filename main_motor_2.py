@@ -67,6 +67,7 @@ if __name__ == '__main__':
     sleep(2)
     print('GO!!!!')
     kq.put([93, True, 0.25])
+    eq.put([40, False, 0.25])
     sleep(5)
     kq.put('STOP')
     print(mq.get())
