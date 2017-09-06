@@ -114,7 +114,7 @@ def stride():
 
 if __name__ == '__main__':
     info('main line')
-    mp.set_start_method('spawn')
+    mp.set_start_method('fork')
     # main_queue = Queue()
     knie_pipe, knie_child_pipe = Pipe()
     enkel_pipe, enkel_child_pipe = Pipe()
