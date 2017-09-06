@@ -66,17 +66,22 @@ if __name__ == '__main__':
 
     sleep(2)
     print('GO!!!!')
+
     kq.put([93, True, 0.2])
     eq.put([40, False, 0.2])
     sleep(1)
+
     kq.put([93, False, 0.2])
     eq.put([40, True, 0.2])
+    sleep(1)
+
     kq.put('STOP')
     print(mq.get())
-    knie.terminate()
 
     eq.put('STOP')
     print(mq.get())
+
+    knie.terminate()
     enkel.terminate()
 
     # keep_going = True
