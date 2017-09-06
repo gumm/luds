@@ -143,8 +143,8 @@ if __name__ == '__main__':
         for d in DD:
             knie.put(['goto', d[1], 0.02])
             enkel.put(['goto', d[0], 0.02])
-            print(knie_pipe.recv())
-            print(enkel_pipe.recv())
+            # print(knie_pipe.recv())
+            # print(enkel_pipe.recv())
 
     # Done and cleanup
     sleep(2)
