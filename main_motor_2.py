@@ -116,21 +116,21 @@ if __name__ == '__main__':
     info('main line')
     mp.set_start_method('spawn')
     # main_queue = Queue()
-    knie_child_pipe, knie_pipe = Pipe(duplex=False)
-    enkel_child_pipe, enkel_pipe = Pipe(duplex=False)
+    knie_recv, knie_send = Pipe(duplex=False)
+    enkel_recv, enkel_send = Pipe(duplex=False)
     knie = Queue()
     enkel = Queue()
     lock = Lock()
 
     kp = Process(target=motor_process, args=(
-        'KNIE', lock, knie, enkel, knie_pipe,
+        'KNIE', lock, knie, enkel, knie_send,
         [6, 13, 19, 26],
         0.005,
         'DUAL_PHASE_FULL_STEP',
         39.34)).start()
 
     ep = Process(target=motor_process, args=(
-        'ENKEL', lock, enkel, knie, enkel_pipe,
+        'ENKEL', lock, enkel, knie, enkel_send,
         [12, 16, 20, 21],
         0.005,
         'DUAL_PHASE_FULL_STEP',
@@ -143,16 +143,16 @@ if __name__ == '__main__':
         for d in DD:
             knie.put(['goto', d[1], 0.05])
             # enkel.put(['goto', d[0], 0.05])
-            print(knie_pipe.recv())
+            print(knie_recv.recv())
             # print(enkel_pipe.recv())
 
     # Done and cleanup
     sleep(2)
     knie.put('STOP')
-    print(knie_pipe.recv())
+    print(knie_recv.recv())
 
     enkel.put('STOP')
-    print(enkel_pipe.recv())
+    print(enkel_recv.recv())
 
     # kp.terminate()
     # ep.terminate()
