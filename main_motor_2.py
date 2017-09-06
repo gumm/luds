@@ -80,14 +80,15 @@ def motor_process(name, l, my_q, their_q, my_pipe, con_pins, speed, seq, pos):
                     cw=work.pop(0),
                     steps=None,
                     duration=work.pop(0))
+                my_pipe.send('%s OK' % name)
             elif f == 'goto':
                 motor.go_to_pos(
                     work.pop(0),
                     duration=work.pop(0))
+                my_pipe.send('%s OK' % name)
             else:
                 print('%s:  I dont know what to do...' % name)
                 break
-            my_pipe.send('%s OK' % name)
 
             # l.acquire()
             # val = '%s sends %s' % (name, counter)
