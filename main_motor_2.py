@@ -42,6 +42,29 @@ def motor_process(name, l, my_q, their_q, master_queue, con_pins, speed, seq):
             # sleep(0.5)
             # l.release()
 
+
+def forward():
+    kq.put([93, True, 0.2])
+    eq.put([40, False, 0.2])
+
+
+def backward():
+    kq.put([93, False, 0.2])
+    eq.put([40, True, 0.2])
+
+
+def done():
+    kq.put('STOP')
+    print(mq.get())
+
+    eq.put('STOP')
+    print(mq.get())
+
+    knie.terminate()
+    enkel.terminate()
+    print('All Done...')
+
+
 if __name__ == '__main__':
     info('main line')
     mp.set_start_method('spawn')
@@ -68,30 +91,11 @@ if __name__ == '__main__':
     sleep(1)
     print('GO!!!!')
 
-    kq.put([93, True, 0.2])
-    eq.put([40, False, 0.2])
-    sleep(5)
-
-    kq.put([93, False, 0.2])
-    eq.put([40, True, 0.2])
+    forward()
     sleep(1)
-
-    kq.put('STOP')
-    print(mq.get())
-
-    eq.put('STOP')
-    print(mq.get())
-
-    knie.terminate()
-    enkel.terminate()
-
-    # keep_going = True
-    # while keep_going:
-    #     someone_is_done = mq.get()
-    #     if someone_is_done:
-    #         knie.terminate()
-    #         enkel.terminate()
-    #         keep_going = False
+    backward()
+    sleep(1)
+    done()
 
     GPIO.cleanup()
-    print('All Done...')
+
