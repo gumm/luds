@@ -25,7 +25,8 @@ def motor_process(name, l, my_q, their_q, master_queue, con_pins, speed, seq):
         if work is None:
             break
         elif work == 'STOP':
-            master_queue.put(True)
+            motor.done()
+            master_queue.put([name, 'STOP OK'])
             break
         else:
             print('%s %s' % (name, work))
@@ -67,7 +68,12 @@ if __name__ == '__main__':
     print('GO!!!!')
     kq.put([93, True, 0.25])
     sleep(5)
+    kq.put('STOP')
+    print(mq.get())
     knie.terminate()
+
+    eq.put('STOP')
+    print(mq.get())
     enkel.terminate()
 
     # keep_going = True

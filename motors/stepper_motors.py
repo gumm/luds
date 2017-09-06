@@ -82,6 +82,10 @@ class Sm28BJY48:
         for p in self.CON_PINS:
             GPIO.output(p, 0)
 
+    def done(self):
+        self.reset()
+        GPIO.cleanup()
+
     def deg_to_steps(self, deg):
         """
         Given some degree value, convert it to stepper motor steps
