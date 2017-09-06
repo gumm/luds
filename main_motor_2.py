@@ -27,7 +27,7 @@ def motor_process(name, l, my_q, their_q, master_queue, con_pins, speed, seq, po
         elif work == 'STOP':
             motor.done()
             master_queue.put('%s: STOP OK' % name)
-            break
+            return
         else:
             print('%s %s' % (name, work))
             f = work.pop(0)
@@ -106,8 +106,8 @@ if __name__ == '__main__':
     enkel.put('STOP')
     print(main_queue.get())
 
-    kp.terminate()
-    ep.terminate()
+    # kp.terminate()
+    # ep.terminate()
 
     print('All Done...')
     GPIO.cleanup()
