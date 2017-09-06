@@ -26,7 +26,7 @@ def motor_process(name, l, my_q, their_q, master_queue, con_pins, speed, seq):
             break
         elif work == 'STOP':
             motor.done()
-            master_queue.put(name, 'STOP OK')
+            master_queue.put('%s: STOP OK' % name)
             break
         else:
             print('%s %s' % (name, work))
