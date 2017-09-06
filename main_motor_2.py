@@ -90,14 +90,17 @@ if __name__ == '__main__':
         0.005,
         'DUAL_PHASE_FULL_STEP'))
 
+
     knie.start()
     enkel.start()
 
     sleep(1)
     print('GO!!!!')
 
-    for i in range(2):
-        stride()
+    # for i in range(2):
+    #     stride()
+    eq.put([40, False, 0.2])
+
     done()
 
     GPIO.cleanup()
