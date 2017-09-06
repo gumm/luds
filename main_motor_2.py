@@ -101,11 +101,11 @@ if __name__ == '__main__':
     # Done and cleanup
     sleep(2)
     knie.put('STOP')
-    print(knie.get())
+    print(main_queue.get())
     kp.terminate()
 
     enkel.put('STOP')
-    print(enkel.get())
+    print(main_queue.get())
     ep.terminate()
 
     print('All Done...')
