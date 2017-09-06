@@ -84,7 +84,6 @@ class Sm28BJY48:
 
     def done(self):
         self.reset()
-        GPIO.cleanup()
 
     def deg_to_steps(self, deg):
         """

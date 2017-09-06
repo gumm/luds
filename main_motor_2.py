@@ -92,4 +92,5 @@ if __name__ == '__main__':
     #         enkel.terminate()
     #         keep_going = False
 
+    GPIO.cleanup()
     print('All Done...')
