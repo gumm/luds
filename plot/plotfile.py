@@ -62,9 +62,18 @@ class PlotFile:
 
         print(df)
 
-        def blah(n, t):
+        def enkel(n):
+            v = 20 + n
             try:
-                res = quad.mb_mfb(n, t)
+                res = quad.mb_mfb(v, 'enkel')
+            except AssertionError:
+                res = None
+            return res
+
+        def knie(n):
+            v = 48.8 + n
+            try:
+                res = quad.mb_mfb(v, 'knie')
             except AssertionError:
                 res = None
             return res
@@ -79,18 +88,32 @@ class PlotFile:
         df['heup'] = df['heup'].apply(lambda x: x * h)
         print(df)
 
-        df['enkel'] = df['enkel'].apply(lambda x: blah(x, 'enkel'))
-        df['knie'] = df['knie'].apply(lambda x: blah(x, 'knie'))
+        df['enkel'] = df['enkel'].apply(lambda x: enkel(x))
+        df['knie'] = df['knie'].apply(lambda x: knie(x))
+        print(df)
 
         print(df.max(axis=0))
         print(df.min(axis=0))
+
+        e_min_2 = 51.857125
+        k_min_2 = 68.538052
+
+        df['enkel'] = df['enkel'].apply(lambda x: round(x - e_min_2, 2))
+        df['knie'] = df['knie'].apply(lambda x: round(x - k_min_2, 2))
+        df['heup'] = df['heup'].apply(lambda x: round(x, 2))
+        print(df)
+
+        print(df['knie'].max(axis=0))
+        print(df['knie'].min(axis=0))
+        print(df['enkel'].max(axis=0))
+        print(df['enkel'].min(axis=0))
 
         fig = df.plot()
         fig.set(xlabel=self.xLab, ylabel=self.yLab)
         if self.title:
             plt.title(self.title)
         # plt.show()
-        plt.savefig(self.write_file)
+        plt.savefig('%s.png' % self.title)
 
 
 # array([[ 1. ,  2. ,  3. ],

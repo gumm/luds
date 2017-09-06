@@ -12,13 +12,13 @@ def info(title):
     print('process id:', os.getpid())
 
 
-def motor_process(name, l, my_q, their_q, master_queue, con_pins, speed, seq):
+def motor_process(name, l, my_q, their_q, master_queue, con_pins, speed, seq, pos):
     info(name)
-    counter = 0
     motor = stepper_motors.Sm28BJY48(
         con_pins=con_pins,
         speed=speed,
-        seq=seq)
+        seq=seq,
+        pos=pos)
 
     while True:
         work = my_q.get()
@@ -30,11 +30,20 @@ def motor_process(name, l, my_q, their_q, master_queue, con_pins, speed, seq):
             break
         else:
             print('%s %s' % (name, work))
-            motor.turn(
-                ang=work.pop(0),
-                cw=work.pop(0),
-                steps=None,
-                duration=work.pop(0))
+            f = work.pop(0)
+            if f == 'turn':
+                motor.turn(
+                    ang=work.pop(0),
+                    cw=work.pop(0),
+                    steps=None,
+                    duration=work.pop(0))
+            elif f == 'goto':
+                motor.go_to_pos(
+                    work.pop(0),
+                    duration=work.pop(0))
+            else:
+                print('%s:  I dont know what to do...' % name)
+                break
 
             # l.acquire()
             # val = '%s sends %s' % (name, counter)
@@ -44,13 +53,13 @@ def motor_process(name, l, my_q, their_q, master_queue, con_pins, speed, seq):
 
 
 def forward():
-    kq.put([90, True, 0.25])
-    eq.put([40, False, 0.25])
+    knie.put(['turn', 90, True, 0.25])
+    enkel.put(['turn', 40, False, 0.25])
 
 
 def backward():
-    kq.put([90, False, 0.25])
-    eq.put([40, True, 0.25])
+    knie.put(['turn', 90, False, 0.25])
+    enkel.put(['turn', 40, True, 0.25])
 
 
 def stride():
@@ -61,37 +70,43 @@ def stride():
 if __name__ == '__main__':
     info('main line')
     mp.set_start_method('spawn')
-    mq = mp.Queue()
-    kq = mp.Queue()
-    eq = mp.Queue()
+    main_queue = mp.Queue()
+    knie = mp.Queue()
+    enkel = mp.Queue()
     lock = mp.Lock()
 
-    knie = mp.Process(target=motor_process, args=(
-        'KNIE', lock, kq, eq, mq,
+    kp = mp.Process(target=motor_process, args=(
+        'KNIE', lock, knie, enkel, main_queue,
         [6, 13, 19, 26],
         0.005,
-        'DUAL_PHASE_FULL_STEP')).start()
+        'DUAL_PHASE_FULL_STEP',
+        20)).start()
 
-    enkel = mp.Process(target=motor_process, args=(
-        'ENKEL', lock, eq, kq, mq,
+    ep = mp.Process(target=motor_process, args=(
+        'ENKEL', lock, enkel, knie, main_queue,
         [12, 16, 20, 21],
         0.005,
-        'DUAL_PHASE_FULL_STEP')).start()
+        'DUAL_PHASE_FULL_STEP',
+        0)).start()
 
     sleep(1)
     print('GO!!!!')
 
-    for i in range(2):
-        stride()
-        sleep(0.5)
+    knie.put('goto', 30, 0.5)
+
+    # for i in range(2):
+    #     stride()
+    #     sleep(0.5)
 
     # Done and cleanup
-    kq.put('STOP')
-    print(mq.get())
-    eq.put('STOP')
-    print(mq.get())
-    knie.terminate()
-    enkel.terminate()
+    knie.put('STOP')
+    print(knie.get())
+    kp.terminate()
+
+    enkel.put('STOP')
+    print(enkel.get())
+    ep.terminate()
+
     print('All Done...')
     GPIO.cleanup()
 

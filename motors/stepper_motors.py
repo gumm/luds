@@ -45,7 +45,7 @@ HALF_STEP = [
 
 
 class Sm28BJY48:
-    def __init__(self, con_pins=None, speed=0.001, seq='HALF_STEP'):
+    def __init__(self, con_pins=None, speed=0.001, seq='HALF_STEP', pos=0):
 
         # These are the pins corresponding to the
         # stepper motor inputs.
@@ -62,13 +62,17 @@ class Sm28BJY48:
             self.SEQ = SINGLE_PHASE_STEP
             self.SPR = 256
         else:
-            raise Exception('"%s" is not a recognised step sequence name.' % seq)
+            raise Exception('"%s" is not a recognised step sequence.' % seq)
 
         # Calculate this only once.
         self.SEQ_LENGTH = len(self.SEQ)
 
         # We want to keep track of the step count
         self.SC = 0
+
+        # We also want to keep track of the degree position
+        # of the motor
+        self.POS = pos
 
         # Set the pins to outputs, and make them all low
         for pin in self.CON_PINS:
@@ -91,7 +95,6 @@ class Sm28BJY48:
         :param deg: A number of degrees
         :return: A number of steps
         """
-
         return round(deg * (self.SPR / 360))
         
     def turn(self, ang=360, cw=0, steps=None, duration=None):
@@ -153,6 +156,15 @@ class Sm28BJY48:
                     GPIO.output(self.CON_PINS[p], self.SEQ[step][p])
                 sleep(interval)
         # self.reset()
+
+    def set_pos(self, v):
+        self.POS = v
+
+    def go_to_pos(self, p, duration=None):
+        v = self.POS - p
+        self.turn(ang=abs(v), cw=(v >= 0), duration=duration)
+        self.POS = p
+        print('Now in pos: %s' % self.POS)
 
     def go_zero(self):
         """
