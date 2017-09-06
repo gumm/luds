@@ -26,7 +26,7 @@ def motor_process(name, l, my_q, their_q, master_queue, con_pins, speed, seq):
             break
         elif work == 'STOP':
             motor.done()
-            master_queue.put([name, 'STOP OK'])
+            master_queue.put(name, 'STOP OK')
             break
         else:
             print('%s %s' % (name, work))
@@ -35,6 +35,7 @@ def motor_process(name, l, my_q, their_q, master_queue, con_pins, speed, seq):
                 cw=work.pop(0),
                 steps=None,
                 duration=work.pop(0))
+
             # l.acquire()
             # val = '%s sends %s' % (name, counter)
             # their_q.put(val)
@@ -64,12 +65,12 @@ if __name__ == '__main__':
     knie.start()
     enkel.start()
 
-    sleep(2)
+    sleep(1)
     print('GO!!!!')
 
     kq.put([93, True, 0.2])
     eq.put([40, False, 0.2])
-    sleep(1)
+    sleep(5)
 
     kq.put([93, False, 0.2])
     eq.put([40, True, 0.2])
