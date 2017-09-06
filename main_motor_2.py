@@ -1,5 +1,5 @@
 import multiprocessing as mp
-from multiprocessing import Process, Pipe, Queue, Lock
+from multiprocessing import Process, Pipe, Queue
 import os
 from time import sleep
 import RPi.GPIO as GPIO
@@ -56,7 +56,7 @@ def info(title):
     print('process id:', os.getpid())
 
 
-def motor_process(name, l, my_q, their_q, my_pipe, con_pins, speed, seq, pos):
+def motor_process(name, my_q, my_pipe, con_pins, speed, seq, pos):
     info(name)
     motor = stepper_motors.Sm28BJY48(
         name=name,
@@ -91,47 +91,24 @@ def motor_process(name, l, my_q, their_q, my_pipe, con_pins, speed, seq, pos):
                 print('%s:  I dont know what to do...' % name)
                 break
 
-            # l.acquire()
-            # val = '%s sends %s' % (name, counter)
-            # their_q.put(val)
-            # sleep(0.5)
-            # l.release()
-
-
-def forward():
-    knie.put(['turn', 90, True, 0.25])
-    enkel.put(['turn', 40, False, 0.25])
-
-
-def backward():
-    knie.put(['turn', 90, False, 0.25])
-    enkel.put(['turn', 40, True, 0.25])
-
-
-def stride():
-    forward()
-    backward()
-
 
 if __name__ == '__main__':
     info('main line')
     mp.set_start_method('spawn')
-    # main_queue = Queue()
     knie_recv, knie_send = Pipe(duplex=False)
     enkel_recv, enkel_send = Pipe(duplex=False)
     knie = Queue()
     enkel = Queue()
-    lock = Lock()
 
     kp = Process(target=motor_process, args=(
-        'KNIE', lock, knie, enkel, knie_send,
+        'KNIE', knie, knie_send,
         [6, 13, 19, 26],
         0.001,
         'DUAL_PHASE_FULL_STEP',
         39.34)).start()
 
     ep = Process(target=motor_process, args=(
-        'ENKEL', lock, enkel, knie, enkel_send,
+        'ENKEL', enkel, enkel_send,
         [12, 16, 20, 21],
         0.001,
         'DUAL_PHASE_FULL_STEP',
@@ -156,9 +133,6 @@ if __name__ == '__main__':
     enkel.put('STOP')
     print(enkel_recv.recv())
 
-    # kp.terminate()
-    # ep.terminate()
-
-    print('All Done...')
     GPIO.cleanup()
+    print('GPIO Cleanup Done...')
 
