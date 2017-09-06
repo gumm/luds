@@ -162,7 +162,7 @@ class Sm28BJY48:
 
     def go_to_pos(self, p, duration=None):
         v = self.POS - p
-        self.turn(ang=abs(v), cw=(v >= 0), duration=duration)
+        self.turn(ang=abs(v), cw=(v < 0), duration=duration)
         self.POS = p
         print('Now in pos: %s' % self.POS)
 
