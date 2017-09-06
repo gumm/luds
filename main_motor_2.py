@@ -126,21 +126,21 @@ if __name__ == '__main__':
     kp = Process(target=motor_process, args=(
         'KNIE', lock, knie, enkel, knie_send,
         [6, 13, 19, 26],
-        0.005,
+        0.001,
         'DUAL_PHASE_FULL_STEP',
         39.34)).start()
 
     ep = Process(target=motor_process, args=(
         'ENKEL', lock, enkel, knie, enkel_send,
         [12, 16, 20, 21],
-        0.005,
-        'HALF_STEP',
+        0.001,
+        'DUAL_PHASE_FULL_STEP',
         7.49)).start()
 
     sleep(1)
     print('GO!!!!')
 
-    SPEED = 0.02
+    SPEED = 0.015
     for i in range(5):
         for d in DD:
             knie.put(['goto', d[1], SPEED])
