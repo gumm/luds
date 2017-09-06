@@ -1,8 +1,8 @@
 import multiprocessing as mp
 import os
 from time import sleep
-# import RPi.GPIO as GPIO
-# from motors import stepper_motors
+import RPi.GPIO as GPIO
+from motors import stepper_motors
 
 
 def info(title):
@@ -15,25 +15,30 @@ def info(title):
 def motor_process(name, l, my_q, their_q, master_queue, con_pins, speed, seq):
     info(name)
     counter = 0
-    # motor = stepper_motors.Sm28BJY48(
-    #     con_pins=con_pins,
-    #     speed=speed,
-    #     seq=seq)
+    motor = stepper_motors.Sm28BJY48(
+        con_pins=con_pins,
+        speed=speed,
+        seq=seq)
 
     while True:
         work = my_q.get()
         if work is None:
             break
-        print('%s got message from %s' % (name, work))
-        counter = counter + 1
-        if counter > 10:
+        elif work == 'STOP':
             master_queue.put(True)
+            break
         else:
-            l.acquire()
-            val = '%s sends %s' % (name, counter)
-            their_q.put(val)
-            sleep(0.5)
-            l.release()
+            print('%s %s' % (name, work))
+            motor.turn(
+                ang=work.pop(0),
+                cw=work.pop(0),
+                steps=None,
+                duration=work.pop(0))
+            # l.acquire()
+            # val = '%s sends %s' % (name, counter)
+            # their_q.put(val)
+            # sleep(0.5)
+            # l.release()
 
 if __name__ == '__main__':
     info('main line')
@@ -58,15 +63,19 @@ if __name__ == '__main__':
     knie.start()
     enkel.start()
 
-    sleep(5)
+    sleep(2)
     print('GO!!!!')
-    kq.put('GO!!!!')
-    keep_going = True
-    while keep_going:
-        someone_is_done = mq.get()
-        if someone_is_done:
-            knie.terminate()
-            enkel.terminate()
-            keep_going = False
+    kq.put([93, True, 0.25])
+    sleep(5)
+    knie.terminate()
+    enkel.terminate()
+
+    # keep_going = True
+    # while keep_going:
+    #     someone_is_done = mq.get()
+    #     if someone_is_done:
+    #         knie.terminate()
+    #         enkel.terminate()
+    #         keep_going = False
 
     print('All Done...')
