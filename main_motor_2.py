@@ -136,9 +136,9 @@ if __name__ == '__main__':
     print('GO!!!!')
 
     for d in DD:
-        knie.put(['goto', d[1], 0.05])
-        enkel.put(['goto', d[0], 0.05])
-        sleep(0.02)
+        knie.put(['goto', d[1], 0.03])
+        enkel.put(['goto', d[0], 0.03])
+        # sleep(0.02)
     # for i in range(2):
     #     stride()
     #     sleep(0.5)
