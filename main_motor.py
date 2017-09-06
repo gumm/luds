@@ -1,5 +1,4 @@
 from time import sleep
-from functools import partial
 import RPi.GPIO as GPIO
 from motors import stepper_motors
 

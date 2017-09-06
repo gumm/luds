@@ -1,5 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+from geometry import quadrilateral as quad
 
 
 class PlotFile:
@@ -61,6 +62,13 @@ class PlotFile:
 
         print(df)
 
+        def blah(n, t):
+            try:
+                res = quad.mb_mfb(n, t)
+            except AssertionError:
+                res = None
+            return res
+
         df['enkel'] = df['enkel'].apply(lambda x: x - e_min)
         df['knie'] = df['knie'].apply(lambda x: x - k_min)
         df['heup'] = df['heup'].apply(lambda x: x - h_min)
@@ -70,6 +78,9 @@ class PlotFile:
         df['knie'] = df['knie'].apply(lambda x: x * k)
         df['heup'] = df['heup'].apply(lambda x: x * h)
         print(df)
+
+        df['enkel'] = df['enkel'].apply(lambda x: blah(x, 'enkel'))
+        df['knie'] = df['knie'].apply(lambda x: blah(x, 'knie'))
 
         print(df.max(axis=0))
         print(df.min(axis=0))
