@@ -99,6 +99,7 @@ if __name__ == '__main__':
     #     sleep(0.5)
 
     # Done and cleanup
+    sleep(2)
     knie.put('STOP')
     print(knie.get())
     kp.terminate()
