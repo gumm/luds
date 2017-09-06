@@ -135,13 +135,10 @@ if __name__ == '__main__':
     sleep(1)
     print('GO!!!!')
 
-    for d in DD:
-        knie.put(['goto', d[1], 0.03])
-        enkel.put(['goto', d[0], 0.03])
-        # sleep(0.02)
-    # for i in range(2):
-    #     stride()
-    #     sleep(0.5)
+    for i in range(5):
+        for d in DD:
+            knie.put(['goto', d[1], 0.03])
+            enkel.put(['goto', d[0], 0.03])
 
     # Done and cleanup
     sleep(2)
