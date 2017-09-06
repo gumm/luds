@@ -45,7 +45,10 @@ HALF_STEP = [
 
 
 class Sm28BJY48:
-    def __init__(self, name='Sm28BJY48', con_pins=None, speed=0.001, seq='HALF_STEP', pos=0):
+    def __init__(self,
+                 name='Sm28BJY48',
+                 con_pins=None, speed=0.001,
+                 seq='HALF_STEP', pos=0):
         self.name = name
 
         # These are the pins corresponding to the
@@ -86,9 +89,6 @@ class Sm28BJY48:
         """
         for p in self.CON_PINS:
             GPIO.output(p, 0)
-
-    def done(self):
-        self.reset()
 
     def deg_to_steps(self, deg):
         """
@@ -131,7 +131,6 @@ class Sm28BJY48:
         # convert the given angle to the nearest
         # integer number of steps.
         steps = steps if steps else self.deg_to_steps(ang)
-        print(steps)
 
         # When given a time, calculate the sleep interval between steps
         if steps:
@@ -139,7 +138,6 @@ class Sm28BJY48:
         else:
             interval = self.SLEEP
         interval = max(interval, 0.001)
-        # print('DUR: %s STEPS: %s INTERVAL: %s' % (duration, steps, interval))
 
         # Depending on the given direction, rotation is either
         # a list from 0 to self.SEQ_LENGTH (ccw) or self.SEQ_LENGTH to 0 (cw)
@@ -160,10 +158,6 @@ class Sm28BJY48:
                 for p in pins:
                     GPIO.output(self.CON_PINS[p], self.SEQ[step][p])
                 sleep(interval)
-        # self.reset()
-
-    def set_pos(self, v):
-        self.POS = v
 
     def go_to_pos(self, p, duration=None):
         v = self.POS - p
@@ -171,17 +165,4 @@ class Sm28BJY48:
         self.POS = p
         print('%s in pos: %s' % (self.name, self.POS))
 
-    def go_zero(self):
-        """
-        Return the number of steps required to get back
-        to 0 if 1 rotation is 512 steps.
-        The current steps may be negative or positive.
-        Half rotation is 256, and this is as far as
-        it is possible to get away from 0
-        """
-        halfway = int(self.SPR / 2)
-        s = self.SC % self.SPR
-        steps = halfway - (s - halfway) if s > halfway else s
-        return self.turn(steps=steps, cw=s > halfway)
-            
 

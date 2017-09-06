@@ -49,15 +49,7 @@ DD = [
 ]
 
 
-def info(title):
-    print(title)
-    print('module name:', __name__)
-    print('parent process:', os.getppid())
-    print('process id:', os.getpid())
-
-
 def motor_process(name, my_q, my_pipe, con_pins, speed, seq, pos):
-    info(name)
     motor = stepper_motors.Sm28BJY48(
         name=name,
         con_pins=con_pins,
@@ -70,30 +62,22 @@ def motor_process(name, my_q, my_pipe, con_pins, speed, seq, pos):
         if work is None:
             break
         elif work == 'STOP':
-            motor.done()
+            motor.reset()
             my_pipe.send('%s: STOP OK' % name)
             return
         else:
             f = work.pop(0)
-            if f == 'turn':
-                motor.turn(
-                    ang=work.pop(0),
-                    cw=work.pop(0),
-                    steps=None,
-                    duration=work.pop(0))
-                my_pipe.send('%s OK' % name)
-            elif f == 'goto':
+            if f == 'goto':
                 motor.go_to_pos(
                     work.pop(0),
                     duration=work.pop(0))
                 my_pipe.send('%s OK' % name)
             else:
-                print('%s:  I dont know what to do...' % name)
+                print('%s:  I dont know what to do with:' % (name, f))
                 break
 
 
 if __name__ == '__main__':
-    info('main line')
     mp.set_start_method('spawn')
     knie_recv, knie_send = Pipe(duplex=False)
     enkel_recv, enkel_send = Pipe(duplex=False)
