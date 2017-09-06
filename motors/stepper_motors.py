@@ -45,7 +45,8 @@ HALF_STEP = [
 
 
 class Sm28BJY48:
-    def __init__(self, con_pins=None, speed=0.001, seq='HALF_STEP', pos=0):
+    def __init__(self, name='Sm28BJY48', con_pins=None, speed=0.001, seq='HALF_STEP', pos=0):
+        self.name = name
 
         # These are the pins corresponding to the
         # stepper motor inputs.
@@ -168,7 +169,7 @@ class Sm28BJY48:
         v = self.POS - p
         self.turn(ang=abs(v), cw=(v < 0), duration=duration)
         self.POS = p
-        print('Now in pos: %s' % self.POS)
+        print('%s in pos: %s' % (self.name, self.POS))
 
     def go_zero(self):
         """

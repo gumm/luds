@@ -59,6 +59,7 @@ def info(title):
 def motor_process(name, l, my_q, their_q, my_pipe, con_pins, speed, seq, pos):
     info(name)
     motor = stepper_motors.Sm28BJY48(
+        name=name,
         con_pins=con_pins,
         speed=speed,
         seq=seq,
@@ -141,8 +142,8 @@ if __name__ == '__main__':
 
     for i in range(5):
         for d in DD:
-            knie.put(['goto', d[1], 0.05])
-            enkel.put(['goto', d[0], 0.05])
+            knie.put(['goto', d[1], 0.001])
+            enkel.put(['goto', d[0], 0.001])
             print(knie_recv.recv())
             print(enkel_recv.recv())
 
