@@ -87,7 +87,7 @@ def motor_process(name, l, my_q, their_q, my_pipe, con_pins, speed, seq, pos):
             else:
                 print('%s:  I dont know what to do...' % name)
                 break
-            my_pipe.send('OK')
+            my_pipe.send('%s OK' % name)
 
             # l.acquire()
             # val = '%s sends %s' % (name, counter)
