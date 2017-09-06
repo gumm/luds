@@ -130,9 +130,13 @@ class Sm28BJY48:
         # convert the given angle to the nearest
         # integer number of steps.
         steps = steps if steps else self.deg_to_steps(ang)
+        print(steps)
 
         # When given a time, calculate the sleep interval between steps
-        interval = duration / steps if duration else self.SLEEP
+        if steps:
+            interval = duration / steps
+        else:
+            interval = self.SLEEP
         interval = max(interval, 0.001)
         # print('DUR: %s STEPS: %s INTERVAL: %s' % (duration, steps, interval))
 
