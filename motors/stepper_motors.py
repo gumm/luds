@@ -78,6 +78,9 @@ class Sm28BJY48:
         # of the motor
         self.POS = pos
 
+        # Degrees per step
+        self.DPS = self.SPR / 360
+
         # Set the pins to outputs, and make them all low
         for pin in self.CON_PINS:
             GPIO.setup(pin, GPIO.OUT)
@@ -96,7 +99,7 @@ class Sm28BJY48:
         :param deg: A number of degrees
         :return: A number of steps
         """
-        return int(round(deg * (self.SPR / 360)))
+        return int(round(deg * self.DPS))
         
     def turn(self, ang=360, cw=0, steps=None, duration=None):
         """
@@ -162,9 +165,21 @@ class Sm28BJY48:
                 sleep(interval)
 
     def go_to_pos(self, p, duration=None):
-        v = self.POS - p
-        self.turn(ang=abs(v), cw=(v < 0), duration=duration)
-        self.POS = p
+        delta = self.POS - p
+
+        # When the delta between where we are and where we need to be
+        # is very small, we may end up with 0 steps that will be taken by the
+        # motor. If the then adjust our new position with the calculated delta
+        # we may start to drift as a result of the rounding.
+        # Address rounding drift by using the resultant steps to
+        # calculate the new position, rather than simply taking the
+        # given new position (p) as canon.
+        stps = self.deg_to_steps(abs(delta))
+        sign = delta / abs(delta)  # Returns 1 or -1
+
+        self.turn(ang=abs(delta), cw=(delta < 0), steps=stps, duration=duration)
+
+        self.POS = sign * stps * self.DPS
         print('%s in pos: %s' % (self.name, self.POS))
 
 
