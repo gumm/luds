@@ -18,8 +18,6 @@ class ADC_ADS1115:
         self.adc = ADS1115()
 
         # show values
-        print("Calibrate Mode: %s" % self.args.calibrate)
-        print("Calibrate PIN: %s" % self.args.pin)
         if self.raw:
             print("RAW Readings")
         else:
@@ -81,40 +79,31 @@ class ADC_ADS1115:
         return "%.2f" % round(r, 2)
 
     def run(self):
-        if self.args.calibrate and self.args.pin is not None:
-            # Main loop.
+        t = 0
+        f = None
+        filename = self.args.filename
+        try:
+            if filename:
+                f = open(filename, "w", encoding="utf-8")
             while True:
-                p = int(self.args.pin)
-                v = self.adc.read_adc(p, gain=self.GAIN)
-                print(v)
-                time.sleep(0.1)
-
-        else:
-            t = 0
-            f = None
-            filename = self.args.filename
-            try:
-                if filename:
-                    f = open(filename, "w", encoding="utf-8")
-                while True:
-                    # # Read all the ADC channel values in a list.
-                    output = '%.2f' % round(t, 2)
-                    for pin, cal in self.POT_CAL.items():
-                        raw_reading = self.adc.read_adc(pin, gain=self.GAIN)
-                        if self.raw:
-                            ang = self.reading_to_degrees(cal, raw_reading)
-                        else:
-                            ang = None
-                        output = '%s %s' % (output, ang if ang else raw_reading)
-                    t += self.sample_rate
-                    if f:
-                        f.write('%s\n' % output)
-                    print(output)
-                    time.sleep(self.sample_rate)
-            except KeyboardInterrupt:
-                print('Now Plotting...')
-                f.close() if f else f
-                self.plot()
+                # # Read all the ADC channel values in a list.
+                output = '%.2f' % round(t, 2)
+                for pin, cal in self.POT_CAL.items():
+                    raw_reading = self.adc.read_adc(pin, gain=self.GAIN)
+                    if self.raw:
+                        ang = self.reading_to_degrees(cal, raw_reading)
+                    else:
+                        ang = None
+                    output = '%s %s' % (output, ang if ang else raw_reading)
+                t += self.sample_rate
+                if f:
+                    f.write('%s\n' % output)
+                print(output)
+                time.sleep(self.sample_rate)
+        except KeyboardInterrupt:
+            print('Now Plotting...')
+            f.close() if f else f
+            self.plot()
 
     def plot(self):
         filename = self.args.filename
