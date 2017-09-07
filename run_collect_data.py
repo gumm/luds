@@ -8,7 +8,10 @@ parser.add_argument('-f', '--filename',
                     required=False)
 parser.add_argument('-r', '--raw',
                     help='Write raw readings',
-                    default=True,
+                    required=False)
+parser.add_argument('-s', '--sample_rate',
+                    help='Sample rate. Default 0.05',
+                    default=0.05,
                     required=False)
 args = parser.parse_args()
 

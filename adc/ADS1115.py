@@ -8,10 +8,10 @@ from Adafruit_ADS1x15 import ADS1115
 
 
 class ADC_ADS1115:
-    def __init__(self, mode_args=None, sample_rate=0.05):
+    def __init__(self, mode_args=None):
 
         self.args = mode_args
-        self.sample_rate = sample_rate
+        self.sample_rate = self.args.sample_rate
         self.raw = self.args.raw
 
         # Create an ADS1115 ADC (16-bit) instance.
@@ -90,10 +90,13 @@ class ADC_ADS1115:
                 output = '%.2f' % round(t, 2)
                 for pin, cal in self.POT_CAL.items():
                     raw_reading = self.adc.read_adc(pin, gain=self.GAIN)
+
+                    # Raw readings or converted to angles.
                     if self.raw:
-                        ang = self.reading_to_degrees(cal, raw_reading)
-                    else:
                         ang = None
+                    else:
+                        ang = self.reading_to_degrees(cal, raw_reading)
+
                     output = '%s %s' % (output, ang if ang else raw_reading)
                 t += self.sample_rate
                 if f:
