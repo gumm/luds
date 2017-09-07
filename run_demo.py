@@ -18,15 +18,18 @@ parser.add_argument('-d', '--dps',
                     help='The DPS conversion factor that converts the'
                          'digital readings to human readable degrees. '
                          'Should be around 0.01. Adjust this upwards to '
-                         'amplify the gait, or down to smooth it out.',
+                         'amplify the gait, or down to smooth it out.'
+                         'Default:0.01',
                     default=0.01,
                     required=False)
 parser.add_argument('-k', '--knie',
-                    help='Tune the behavior of the knie motor',
+                    help='Tune the behavior of the knie motor'
+                         'Default: 48.8',
                     default=48.8,
                     required=False)
 parser.add_argument('-e', '--enkel',
-                    help='Tune the behavior of the knie motor',
+                    help='Tune the behavior of the knie motor'
+                         'Default:30',
                     default=30,
                     required=False)
 parser.add_argument('-c', '--cycle',
