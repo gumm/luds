@@ -133,6 +133,9 @@ if __name__ == '__main__':
     knie = Queue()
     enkel = Queue()
 
+    DD, CYCLE, SPEED = get_data()
+    print(DD[0][0], DD[0][1])
+
     kp = Process(target=motor_process, args=(
         'KNIE', knie, knie_send,
         [6, 13, 19, 26],
@@ -150,7 +153,7 @@ if __name__ == '__main__':
     sleep(1)
     print('GO!!!!')
 
-    DD, CYCLE, SPEED = get_data()
+
     for i in range(CYCLE):
         for d in DD:
             knie.put(['goto', d[1], SPEED])
