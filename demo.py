@@ -94,7 +94,8 @@ def get_data():
             dps=float(args.dps),
             knie=float(args.knie),
             enkel=float(args.enkel))
-        print(data)
+        for p in data:
+            print(p)
     return data, int(args.cycle), float(args.sleep)
 
 
