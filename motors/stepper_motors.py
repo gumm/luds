@@ -175,11 +175,14 @@ class Sm28BJY48:
         # calculate the new position, rather than simply taking the
         # given new position (p) as canon.
         stps = self.deg_to_steps(abs(delta))
+
         sign = delta / abs(delta)  # Returns 1 or -1
 
         self.turn(ang=abs(delta), cw=(delta < 0), steps=stps, duration=duration)
 
-        self.POS = sign * stps * self.DPS
+        # self.POS = sign * stps * self.DPS
+
+        self.POS = p
         print('%s in pos: %s' % (self.name, self.POS))
 
     def go_to_pos(self, p, duration=None):
