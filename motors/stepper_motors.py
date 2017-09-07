@@ -96,7 +96,7 @@ class Sm28BJY48:
         :param deg: A number of degrees
         :return: A number of steps
         """
-        return round(deg * (self.SPR / 360))
+        return int(round(deg * (self.SPR / 360)))
         
     def turn(self, ang=360, cw=0, steps=None, duration=None):
         """
