@@ -185,7 +185,7 @@ class Sm28BJY48:
 
         calc_target = self.POS - sign * steps * self.DPS
 
-        self.POS = target_pos
+        self.POS = calc_target
         print('%s: curr:%s, target:%s delta:%s sign:%s steps:%s calc_target:%s POS:%s' % (
             self.name, op, target_pos, delta, sign, steps, calc_target, self.POS))
 
