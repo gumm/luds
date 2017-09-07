@@ -11,7 +11,7 @@ class ADC_ADS1115:
     def __init__(self, mode_args=None):
 
         self.args = mode_args
-        self.sample_rate = self.args.sample_rate
+        self.sample_rate = float(self.args.sample_rate)
         self.raw = self.args.raw
 
         # Create an ADS1115 ADC (16-bit) instance.
