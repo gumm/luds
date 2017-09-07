@@ -144,4 +144,4 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 .idea/
-plot/test.svg
+data/test.svg

@@ -5,6 +5,7 @@ from time import sleep
 import RPi.GPIO as GPIO
 from motors import stepper_motors
 
+
 #   enkel   knie    heup
 DD = [
     [8.18,  0.00, 50.17],
