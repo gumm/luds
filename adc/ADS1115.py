@@ -12,16 +12,16 @@ class ADC_ADS1115:
 
         self.args = mode_args
         self.sample_rate = float(self.args.sample_rate)
-        self.raw = self.args.raw
+        self.convert = self.args.convert
 
         # Create an ADS1115 ADC (16-bit) instance.
         self.adc = ADS1115()
 
         # show values
-        if self.raw:
-            print("RAW Readings")
-        else:
+        if self.convert:
             print('Converted readings')
+        else:
+            print("RAW Readings")
 
         # Choose a gain of 1 for reading voltages from 0 to 4.09V.
         # Or pick a different gain to change the range of voltages that
@@ -92,10 +92,10 @@ class ADC_ADS1115:
                     raw_reading = self.adc.read_adc(pin, gain=self.GAIN)
 
                     # Raw readings or converted to angles.
-                    if self.raw:
-                        ang = None
-                    else:
+                    if self.convert:
                         ang = self.reading_to_degrees(cal, raw_reading)
+                    else:
+                        ang = None
 
                     output = '%s %s' % (output, ang if ang else raw_reading)
                 t += self.sample_rate

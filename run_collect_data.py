@@ -6,8 +6,8 @@ parser = argparse.ArgumentParser(
 parser.add_argument('-f', '--filename',
                     help='Filename to write to',
                     required=False)
-parser.add_argument('-r', '--raw',
-                    help='Write raw readings',
+parser.add_argument('-c', '--convert',
+                    help='Write converted readings i.e degrees',
                     required=False)
 parser.add_argument('-s', '--sample_rate',
                     help='Sample rate. Default 0.05',
