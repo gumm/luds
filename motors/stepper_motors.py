@@ -110,8 +110,8 @@ class Sm28BJY48:
             Defaults to 0 (CCW)
         :param steps: The number of steps to take. Takes precedence over the
             degrees (if both are given)
-        :param duration: The amount of time (in seconds) we should take to execute
-            this turn. When given we calculate the sleep time from here.
+        :param duration: The amount of time (in seconds) we should take to
+            execute this turn. When given we calculate the sleep time from here.
         :return:
         """
         
@@ -128,6 +128,8 @@ class Sm28BJY48:
         # If either the steps or the angle is zero
         # there is no point in doing anything.
         if steps == 0 or ang == 0:
+            if duration:
+                sleep(duration)
             return
         
         # When given steps, use it as is, else
@@ -180,7 +182,7 @@ class Sm28BJY48:
             sign = delta / abs(delta)  # Returns 1 or -1
         calc_target = self.POS - sign * steps * self.DPS
         self.POS = calc_target
-        print('%s: T:%s A:%s S:%s' % (self.name, target_pos, self.POS, steps))
+        return '%s: T:%s A:%s S:%s' % (self.name, target_pos, self.POS, steps)
 
     def go_to_pos_direct(self, p, duration=None):
         v = self.POS - p

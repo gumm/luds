@@ -120,10 +120,7 @@ def motor_process(name, my_q, my_pipe, con_pins, speed, seq, pos):
             if f == 'goto':
                 ang = work.pop(0)
                 dur = work.pop(0)
-                motor.go_to_pos(
-                    ang,
-                    dur)
-                my_pipe.send('%s OK' % name)
+                my_pipe.send(motor.go_to_pos(ang, dur))
             else:
                 print('%s:  I dont know what to do with: %s' % (name, f))
                 break
