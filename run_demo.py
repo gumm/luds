@@ -134,25 +134,25 @@ if __name__ == '__main__':
     enkel = Queue()
 
     DD, CYCLE, SPEED = get_data()
-    print(DD[0][0], DD[0][1])
+    knie_start = DD[0][1]
+    enkel_start = DD[0][0]
 
     kp = Process(target=motor_process, args=(
         'KNIE', knie, knie_send,
         [6, 13, 19, 26],
         0.001,
         'DUAL_PHASE_FULL_STEP',
-        39.34)).start()
+        knie_start)).start()
 
     ep = Process(target=motor_process, args=(
         'ENKEL', enkel, enkel_send,
         [12, 16, 20, 21],
         0.001,
         'DUAL_PHASE_FULL_STEP',
-        7.49)).start()
+        enkel_start)).start()
 
     sleep(1)
     print('GO!!!!')
-
 
     for i in range(CYCLE):
         for d in DD:
