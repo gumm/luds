@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 # Target: 28BJY-48 stepper motor with ULN2003 control board.
-
+import math
 from time import sleep
 import RPi.GPIO as GPIO
 
@@ -99,6 +99,8 @@ class Sm28BJY48:
         :param deg: A number of degrees
         :return: A number of steps
         """
+        if math.isnan(deg):
+            return 0
         return int(round(deg * self.DPS))
         
     def turn(self, ang=360, cw=0, steps=None, duration=None):
@@ -178,7 +180,7 @@ class Sm28BJY48:
         # calculate the new position, rather than simply taking the
         # given new position (p) as canon.
         sign = 1
-        if delta:
+        if delta and not math.isnan(delta):
             sign = delta / abs(delta)  # Returns 1 or -1
         calc_target = self.POS - sign * steps * self.DPS
         self.POS = calc_target
