@@ -182,7 +182,8 @@ class Sm28BJY48:
             sign = delta / abs(delta)  # Returns 1 or -1
         calc_target = self.POS - sign * steps * self.DPS
         self.POS = calc_target
-        return '%s: T:%s A:%s S:%s' % (self.name, target_pos, self.POS, steps)
+        return '%s:\tS:%s\tT:%s\tA:%s' % (
+            self.name, steps, target_pos, self.POS)
 
     def go_to_pos_direct(self, p, duration=None):
         v = self.POS - p
