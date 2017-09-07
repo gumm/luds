@@ -176,7 +176,9 @@ class Sm28BJY48:
         # given new position (p) as canon.
         stps = self.deg_to_steps(abs(delta))
 
-        sign = delta / abs(delta)  # Returns 1 or -1
+        sign = 1
+        if delta:
+            sign = delta / abs(delta)  # Returns 1 or -1
 
         self.turn(ang=abs(delta), cw=(delta < 0), steps=stps, duration=duration)
 
