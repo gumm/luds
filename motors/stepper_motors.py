@@ -164,7 +164,7 @@ class Sm28BJY48:
                     GPIO.output(self.CON_PINS[p], self.SEQ[step][p])
                 sleep(interval)
 
-    def go_to_pos_1(self, p, duration=None):
+    def go_to_pos(self, p, duration=None):
         delta = self.POS - p
 
         # When the delta between where we are and where we need to be
@@ -185,7 +185,7 @@ class Sm28BJY48:
         self.POS = p
         print('%s in pos: %s' % (self.name, self.POS))
 
-    def go_to_pos(self, p, duration=None):
+    def go_to_pos_1(self, p, duration=None):
         v = self.POS - p
         self.turn(ang=abs(v), cw=(v < 0), duration=duration)
         self.POS = p
