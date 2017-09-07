@@ -96,7 +96,7 @@ def get_data():
             enkel=float(args.enkel))
         for p in data:
             print(p)
-    return data, int(args.cycle), float(args.sleep)
+    return data, int(args.cycle), args.sleep
 
 
 def motor_process(name, my_q, my_pipe, con_pins, speed, seq, pos):
