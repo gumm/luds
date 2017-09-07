@@ -164,8 +164,9 @@ class Sm28BJY48:
                     GPIO.output(self.CON_PINS[p], self.SEQ[step][p])
                 sleep(interval)
 
-    def go_to_pos(self, p, duration=None):
-        delta = self.POS - p
+    def go_to_pos(self, target_pos, duration=None):
+        op = self.POS + 0
+        delta = self.POS - target_pos
 
         # When the delta between where we are and where we need to be
         # is very small, we may end up with 0 steps that will be taken by the
@@ -174,19 +175,19 @@ class Sm28BJY48:
         # Address rounding drift by using the resultant steps to
         # calculate the new position, rather than simply taking the
         # given new position (p) as canon.
-        stps = self.deg_to_steps(abs(delta))
+        steps = self.deg_to_steps(abs(delta))
 
         sign = 1
         if delta:
             sign = delta / abs(delta)  # Returns 1 or -1
 
-        self.turn(ang=abs(delta), cw=(delta < 0), steps=stps, duration=duration)
+        self.turn(ang=abs(delta), cw=(delta < 0), steps=steps, duration=duration)
 
-        calc_delta = self.POS + sign * stps * self.DPS
+        calc_target = self.POS + sign * steps * self.DPS
 
-        self.POS = p
-        print('%s: p:%s delta:%s calc_delta:%s POS:%s' % (
-            self.name, p, delta, calc_delta, self.POS))
+        self.POS = target_pos
+        print('%s: op:%s, p:%s delta:%s sign:%s steps:%s calc_delta:%s POS:%s' % (
+            self.name, op, target_pos, delta, sign, steps, calc_target, self.POS))
 
     def go_to_pos_1(self, p, duration=None):
         v = self.POS - p
