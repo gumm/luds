@@ -88,7 +88,9 @@ def get_data():
         (8.18,  0.00, 50.17),
     ]
 
+    is_demo = 1
     if args and args.filename:
+        is_demo = -1
         d = DataViz()
         print('Getting data from file...')
         print(args.filename, args.dps, args.knie, args.enkel)
@@ -99,7 +101,7 @@ def get_data():
             enkel=float(args.enkel))
         for p in data:
             print(p)
-    return data, int(args.cycle), float(args.sleep)
+    return data, int(args.cycle), float(args.sleep), is_demo
 
 
 def motor_process(name, my_q, my_pipe, con_pins, speed, seq, pos):
@@ -123,7 +125,8 @@ def motor_process(name, my_q, my_pipe, con_pins, speed, seq, pos):
             if f == 'goto':
                 ang = work.pop(0)
                 dur = work.pop(0)
-                my_pipe.send(motor.go_to_pos(ang, dur))
+                is_demo = work.pop(0)
+                my_pipe.send(motor.go_to_pos(ang, duration=dur, is_demo=is_demo))
             else:
                 print('%s:  I dont know what to do with: %s' % (name, f))
                 break
@@ -136,7 +139,7 @@ if __name__ == '__main__':
     knie = Queue()
     enkel = Queue()
 
-    DD, CYCLE, SPEED = get_data()
+    DD, CYCLE, SPEED, IS_DEMO = get_data()
     knie_start = DD[0][1]
     enkel_start = DD[0][0]
 
@@ -159,8 +162,8 @@ if __name__ == '__main__':
 
     for i in range(CYCLE):
         for d in DD:
-            knie.put(['goto', d[1], SPEED])
-            enkel.put(['goto', d[0], SPEED])
+            knie.put(['goto', d[1], SPEED, IS_DEMO])
+            enkel.put(['goto', d[0], SPEED, IS_DEMO])
             print(knie_recv.recv())
             print(enkel_recv.recv())
 

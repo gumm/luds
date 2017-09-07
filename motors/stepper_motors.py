@@ -166,11 +166,11 @@ class Sm28BJY48:
                     GPIO.output(self.CON_PINS[p], self.SEQ[step][p])
                 sleep(interval)
 
-    def go_to_pos(self, target_pos, duration=None):
+    def go_to_pos(self, target_pos, duration=None, is_demo=1):
         delta = self.POS - target_pos
         steps = self.deg_to_steps(abs(delta))
 
-        self.turn(ang=abs(delta), cw=(delta > 0), steps=steps, duration=duration)
+        self.turn(ang=abs(delta), cw=(delta * is_demo > 0), steps=steps, duration=duration)
 
         # When the delta between where we are and where we need to be
         # is very small, we may end up with 0 steps that will be taken by the
