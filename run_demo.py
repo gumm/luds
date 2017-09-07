@@ -88,9 +88,9 @@ def get_data():
         (8.18,  0.00, 50.17),
     ]
 
-    is_demo = 1
+    is_demo = -1
     if args and args.filename:
-        is_demo = -1
+        is_demo = 1
         d = DataViz()
         print('Getting data from file...')
         print(args.filename, args.dps, args.knie, args.enkel)
