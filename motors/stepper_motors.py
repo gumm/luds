@@ -182,10 +182,11 @@ class Sm28BJY48:
 
         self.turn(ang=abs(delta), cw=(delta < 0), steps=stps, duration=duration)
 
-        self.POS = self.POS + sign * stps * self.DPS
+        calc_delta = self.POS + sign * stps * self.DPS
 
-        # self.POS = p
-        print('%s in pos: %s' % (self.name, self.POS))
+        self.POS = p
+        print('%s: p:%s delta:%s calc_delta:%s POS:%s' % (
+            self.name, p, delta, calc_delta, self.POS))
 
     def go_to_pos_1(self, p, duration=None):
         v = self.POS - p
