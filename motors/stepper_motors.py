@@ -139,6 +139,8 @@ class Sm28BJY48:
             interval = self.SLEEP
         interval = max(interval, 0.001)
 
+        print('This many steps', steps)
+
         # Depending on the given direction, rotation is either
         # a list from 0 to self.SEQ_LENGTH (ccw) or self.SEQ_LENGTH to 0 (cw)
         rotation = list(range(self.SEQ_LENGTH))
